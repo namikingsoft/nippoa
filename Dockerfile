@@ -18,7 +18,7 @@ RUN stack setup
 
 # setup app
 COPY . /app/
-RUN stack build
+RUN stack test
 
 # entry point
 COPY docker-entrypoint.sh /
