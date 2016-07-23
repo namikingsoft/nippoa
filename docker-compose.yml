@@ -1,0 +1,11 @@
+version: "2"
+services:
+  app:
+    build: .
+    command: idle
+    volumes:
+      - ./app:/app/app
+      - ./src:/app/src
+      - ./test:/app/test
+      - ./stack.yaml:/app/stack.yaml
+      - ./nippoa.cabal:/app/nippoa.cabal
