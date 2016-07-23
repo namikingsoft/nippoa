@@ -38,4 +38,4 @@ test-suite nippoa-test
 
 source-repository head
   type:     git
-  location: https://github.com/githubuser/nippoa
+  location: https://github.com/namikingsoft/nippoa
