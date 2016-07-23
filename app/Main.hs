@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import Index
 
 main :: IO ()
-main = someFunc
+main = execute
