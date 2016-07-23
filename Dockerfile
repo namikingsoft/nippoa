@@ -3,7 +3,7 @@ FROM debian:jessie
 # set env
 ARG TERM=linux
 ARG DEBIAN_FRONTEND=noninteractive
-ENV PATH $PATH:/root/.local/bin
+ENV PATH /app/bin:/root/.local/bin:$PATH
 
 # install stack
 RUN apt-get update \

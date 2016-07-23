@@ -1,0 +1,7 @@
+#!/bin/sh -eu
+
+# normal
+# stack test --file-watch
+
+# shared folder on mac
+stack test --file-watch-poll
