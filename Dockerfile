@@ -11,6 +11,15 @@ RUN apt-get update \
  && curl -sSL https://get.haskellstack.org/ | sh \
  && rm -rf /var/lib/apt/lists/*
 
+# setup stack
+COPY stack.yaml /app/
+WORKDIR /app
+RUN stack setup
+
+# setup app
+COPY . /app/
+RUN stack build
+
 # entry point
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]

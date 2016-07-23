@@ -1,0 +1,5 @@
+.git
+.gitignore
+.vimsessions
+Dockerfile
+docker-compose.yml
