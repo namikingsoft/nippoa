@@ -3,6 +3,8 @@ services:
   app:
     build: .
     command: idle
+    env_file:
+      - .env
     volumes:
       - ./app:/app/app
       - ./src:/app/src
