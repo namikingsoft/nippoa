@@ -2,7 +2,6 @@ module Index
   ( execute
   ) where
 
-import Prelude hiding (id)
 import System.Environment
 import Control.Applicative
 import Network.HTTP.Conduit
@@ -24,9 +23,8 @@ execute = do
     let channelList = parse json
         maybeChannel = fromName channelList "general"
         channel = fromMaybe (error "Channel Not Found") maybeChannel
-        channelId = id channel
     print channel
-    json <- simpleHttp $ printf urlChannelHistory token channelId
+    json <- simpleHttp $ printf urlChannelHistory token (channelId channel)
     putStrLn $ unpack json
     let messages = channelHistoryMessages $ parseChannelHistory json
     putStrLn ""

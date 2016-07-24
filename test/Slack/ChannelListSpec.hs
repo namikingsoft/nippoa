@@ -11,20 +11,20 @@ import Slack.ChannelSpec
 
 channelList :: ChannelList
 channelList = ChannelList
-  { ok = True
-  , channels = [channel0, channel1]
-  }
+            { channelListOk = True
+            , channelListChannels = [channel0, channel1]
+            }
 
 spec :: Spec
 spec = do
 
-  describe "ok" $ do
+  describe "channelListOk" $ do
     it "should return initial value" $ do
-      ok channelList `shouldBe` True
+      channelListOk channelList `shouldBe` True
 
-  describe "channels" $ do
+  describe "channelListChannels" $ do
     it "should return initial value" $ do
-      let list = channels channelList
+      let list = channelListChannels channelList
       length list `shouldBe` 2
       list !! 0 `shouldBe` channel0
       list !! 1 `shouldBe` channel1

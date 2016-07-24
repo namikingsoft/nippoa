@@ -2,23 +2,28 @@ module Slack.ChannelSpec where
 
 import Slack.Channel
 import Test.Hspec
-import Prelude hiding (id)
 
 channel0 :: Channel
-channel0 = Channel "id0" "general"
+channel0 = Channel
+         { channelId = "id0"
+         , channelName = "general"
+         }
 
 channel1 :: Channel
-channel1 = Channel "id1" "random"
+channel1 = Channel
+         { channelId = "id1"
+         , channelName = "random"
+         }
 
 spec :: Spec
 spec = do
 
-  describe "id" $ do
+  describe "channelId" $ do
     it "should return initial value" $ do
-      id channel0 `shouldBe` "id0"
-      id channel1 `shouldBe` "id1"
+      channelId channel0 `shouldBe` "id0"
+      channelId channel1 `shouldBe` "id1"
 
   describe "name" $ do
     it "should return initial value" $ do
-      name channel0 `shouldBe` "general"
-      name channel1 `shouldBe` "random"
+      channelName channel0 `shouldBe` "general"
+      channelName channel1 `shouldBe` "random"

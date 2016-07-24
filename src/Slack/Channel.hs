@@ -1,16 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Slack.Channel
-  ( Channel(..),
-  ) where
+module Slack.Channel where
 
 import Control.Applicative
 import Data.Aeson
+--import Prelude hiding (id)
 
 data Channel = Channel
-  { id :: String
-  , name :: String
-  } deriving (Show, Eq)
+             { channelId :: String
+             , channelName :: String
+             } deriving (Show, Eq)
 
 instance FromJSON Channel where
   parseJSON (Object v) = Channel

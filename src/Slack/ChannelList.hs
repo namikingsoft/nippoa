@@ -1,8 +1,8 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Slack.ChannelList where
 
-import GHC.Generics
+import Control.Applicative
 import Data.Maybe
 import Data.Aeson
 import Data.ByteString.Lazy.Internal
@@ -10,12 +10,20 @@ import Data.ByteString.Lazy.Internal
 import Slack.Channel
 
 data ChannelList = ChannelList
-  { ok :: Bool
-  , channels :: [Channel]
-  } deriving (Show, Eq, Generic)
+                 { channelListOk :: Bool
+                 , channelListChannels :: [Channel]
+                 } deriving (Show, Eq)
 
-instance FromJSON ChannelList
-instance ToJSON ChannelList
+instance FromJSON ChannelList where
+  parseJSON (Object v) = ChannelList
+    <$> v .: "ok"
+    <*> v .: "channels"
+
+instance ToJSON ChannelList where
+  toJSON (ChannelList ok channels) = object
+    [ "ok" .= ok
+    , "channels" .= channels
+    ]
 
 parse :: ByteString -> ChannelList
 parse json = channelList
@@ -24,8 +32,8 @@ parse json = channelList
     channelList = fromMaybe (error "Parse Error") maybeChannelList
 
 fromName :: ChannelList -> String -> Maybe Channel
-fromName result str
+fromName result name
   | length hits > 0 = Just $ hits !! 0
   | otherwise = Nothing
   where 
-    hits = filter (\x -> (name x) == str) $ channels result
+    hits = filter (\x -> (channelName x) == name) $ channelListChannels result
