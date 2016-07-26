@@ -7,15 +7,15 @@ import Data.Aeson
 
 data Message = Message
              { messageType :: String
-             , messageUser :: String
-             , messageText :: String
+             , messageUser :: Maybe String
+             , messageText :: Maybe String
              } deriving (Show, Eq)
 
 instance FromJSON Message where
   parseJSON (Object v) = Message
     <$> v .: "type"
-    <*> v .: "user"
-    <*> v .: "text"
+    <*> v .:? "user"
+    <*> v .:? "text"
 
 instance ToJSON Message where
   toJSON (Message type' user text) = object
