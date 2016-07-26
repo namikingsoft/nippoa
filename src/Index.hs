@@ -14,6 +14,7 @@ import Data.ByteString.Lazy.Char8 (unpack)
 import Slack.ChannelHistory
 import Slack.ChannelList
 import Slack.Channel
+import Slack.Message
 
 execute :: IO ()
 execute = do
@@ -29,8 +30,7 @@ execute = do
     json <- simpleHttp $ printf urlChannelHistory token (channelId channel)
     putStrLn $ unpack json
     let messages = channelHistoryMessages $ parseChannelHistory json
-    putStrLn ""
-    print messages
+    mapM_ (\x -> putStrLn $ fromMaybe "" $ messageText x) messages
   where
     urlChannelList = "https://slack.com/api/channels.list?token=%s"
     urlChannelHistory = "https://slack.com/api/channels.history?token=%s&channel=%s"
