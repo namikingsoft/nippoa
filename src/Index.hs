@@ -2,6 +2,7 @@ module Index
   ( execute
   ) where
 
+import System.IO
 import System.Environment
 import Control.Applicative
 import Network.HTTP.Conduit
@@ -16,6 +17,7 @@ import Slack.Channel
 
 execute :: IO ()
 execute = do
+    hSetEncoding stdout utf8
     token <- getEnv "SLACK_API_TOKEN"
     json <- simpleHttp . printf urlChannelList $ token
     putStrLn ""
