@@ -25,14 +25,14 @@ instance ToJSON ChannelList where
     , "channels" .= channels
     ]
 
-parse :: ByteString -> ChannelList
-parse json = channelList
+parseChannelList :: ByteString -> ChannelList
+parseChannelList json = channelList
   where
     maybeChannelList = decode json :: Maybe ChannelList
     channelList = fromMaybe (error "Parse Error") maybeChannelList
 
-fromName :: ChannelList -> String -> Maybe Channel
-fromName result name
+fromChannelName :: ChannelList -> String -> Maybe Channel
+fromChannelName result name
   | length hits > 0 = Just $ hits !! 0
   | otherwise = Nothing
   where 

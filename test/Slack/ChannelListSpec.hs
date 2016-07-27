@@ -29,16 +29,16 @@ spec = do
       list !! 0 `shouldBe` channel0
       list !! 1 `shouldBe` channel1
 
-  describe "parse" $ do
+  describe "parseChannelList" $ do
     it "should return parsed from json" $ do
       let json = "{\"ok\": true, \"channels\": [{\"id\": \"id0\", \"name\": \"general\"}, {\"id\": \"id1\", \"name\": \"random\"}]}"
-      parse (pack json) `shouldBe` channelList
+      parseChannelList (pack json) `shouldBe` channelList
     it "should call error when parse error" $ do
       let json = "{\"okk\": true}"
-      evaluate (parse $ pack json) `shouldThrow` anyErrorCall
+      evaluate (parseChannelList $ pack json) `shouldThrow` anyErrorCall
 
-  describe "fromName" $ do
+  describe "fromChannelName" $ do
     it "should return maybe channel" $ do
-      fromName channelList "general" `shouldBe` Just channel0
-      fromName channelList "random"  `shouldBe` Just channel1
-      fromName channelList "nothing" `shouldBe` Nothing
+      fromChannelName channelList "general" `shouldBe` Just channel0
+      fromChannelName channelList "random"  `shouldBe` Just channel1
+      fromChannelName channelList "nothing" `shouldBe` Nothing

@@ -10,3 +10,4 @@ services:
       - ./test:/app/test
       - ./stack.yaml:/app/stack.yaml
       - ./nippoa.cabal:/app/nippoa.cabal
+      - ./.env:/app/.env

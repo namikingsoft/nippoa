@@ -16,8 +16,9 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     Index
-                     , Slack.ChannelHistory
+                     , Slack.GroupsList
                      , Slack.ChannelList
+                     , Slack.ChannelHistory
                      , Slack.Channel
                      , Slack.Message
   build-depends:       base >= 4.7 && < 5
