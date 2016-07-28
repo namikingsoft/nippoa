@@ -21,6 +21,7 @@ library
                      , Slack.ChannelHistory
                      , Slack.Channel
                      , Slack.Message
+                     , Slack.Attachment
   build-depends:       base >= 4.7 && < 5
                      , http-conduit ==2.1.11
                      , aeson ==0.11.2.0
