@@ -45,6 +45,7 @@ test-suite nippoa-test
                      , hspec ==2.2.3
                      , nippoa
                      , bytestring ==0.10.6.0
+                     , filepath ==1.4.0.0
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   default-language:    Haskell2010
 

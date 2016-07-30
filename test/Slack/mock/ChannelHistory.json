@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "messages": [
+    {
+      "type": "message",
+      "user": "user0",
+      "text": "text0"
+    },
+    {
+      "type": "message",
+      "user": "user1",
+      "text": "text1"
+    }
+  ]
+}

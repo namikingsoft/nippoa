@@ -1,10 +1,11 @@
+{-# LANGUAGE CPP #-}
 module Slack.ChannelListSpec where
 
 import Slack.ChannelList
 import Slack.Channel
 import Test.Hspec
 
-import Prelude hiding (id)
+import System.FilePath.Posix
 import Control.Exception (evaluate)
 import Data.ByteString.Lazy.Char8 (pack)
 import Slack.ChannelSpec
@@ -31,7 +32,8 @@ spec = do
 
   describe "parseChannelList" $ do
     it "should return parsed from json" $ do
-      let json = "{\"ok\": true, \"channels\": [{\"id\": \"id0\", \"name\": \"general\"}, {\"id\": \"id1\", \"name\": \"random\"}]}"
+      let jsonPath = joinPath [takeDirectory __FILE__,"mock","ChannelList.json"]
+      json <- readFile jsonPath
       parseChannelList (pack json) `shouldBe` channelList
     it "should call error when parse error" $ do
       let json = "{\"okk\": true}"
