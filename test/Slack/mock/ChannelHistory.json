@@ -2,6 +2,7 @@
   "ok": true,
   "messages": [
     {
+      "ts": "1469768478.000747",
       "type": "message",
       "user": "user0",
       "text": "text0",
@@ -19,6 +20,7 @@
       ]
     },
     {
+      "ts": "1469768478.000747",
       "type": "message",
       "user": "user1",
       "text": "text1",
