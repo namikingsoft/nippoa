@@ -13,7 +13,7 @@ attachment0 = Attachment
 attachment1 :: Attachment
 attachment1 = Attachment
          { attachmentFallback = "fallback1"
-         , attachmentTitle = Just "user1"
+         , attachmentTitle = Just "title1"
          , attachmentText = Just "text1"
          }
 
@@ -28,7 +28,7 @@ spec = do
   describe "user" $ do
     it "should return initial value" $ do
       attachmentTitle attachment0 `shouldBe` Just "title0"
-      attachmentTitle attachment1 `shouldBe` Just "user1"
+      attachmentTitle attachment1 `shouldBe` Just "title1"
 
   describe "text" $ do
     it "should return initial value" $ do

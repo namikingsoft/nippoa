@@ -5,10 +5,13 @@ module Slack.Message where
 import Control.Applicative
 import Data.Aeson
 
+import Slack.Attachment
+
 data Message = Message
              { messageType :: String
              , messageUser :: Maybe String
              , messageText :: Maybe String
+             , messageAttachments :: Maybe [Attachment]
              } deriving (Show, Eq)
 
 instance FromJSON Message where
@@ -16,10 +19,12 @@ instance FromJSON Message where
     <$> v .: "type"
     <*> v .:? "user"
     <*> v .:? "text"
+    <*> v .:? "attachments"
 
 instance ToJSON Message where
-  toJSON (Message type' user text) = object
+  toJSON (Message type' user text attachments) = object
     [ "type" .= type'
     , "user" .= user
     , "text" .= text
+    , "attachments" .= attachments
     ]

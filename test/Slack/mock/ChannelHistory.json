@@ -4,12 +4,36 @@
     {
       "type": "message",
       "user": "user0",
-      "text": "text0"
+      "text": "text0",
+      "attachments": [
+        {
+          "fallback": "fallback0",
+          "title": "title0",
+          "text": "text0"
+        },
+        {
+          "fallback": "fallback1",
+          "title": "title1",
+          "text": "text1"
+        }
+      ]
     },
     {
       "type": "message",
       "user": "user1",
-      "text": "text1"
+      "text": "text1",
+      "attachments": [
+        {
+          "fallback": "fallback0",
+          "title": "title0",
+          "text": "text0"
+        },
+        {
+          "fallback": "fallback1",
+          "title": "title1",
+          "text": "text1"
+        }
+      ]
     }
   ]
 }

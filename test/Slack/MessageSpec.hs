@@ -2,12 +2,14 @@ module Slack.MessageSpec where
 
 import Slack.Message
 import Test.Hspec
+import Slack.AttachmentSpec
 
 message0 :: Message
 message0 = Message
          { messageType = "message"
          , messageUser = Just "user0"
          , messageText = Just "text0"
+         , messageAttachments = Just [attachment0, attachment1]
          }
 
 message1 :: Message
@@ -15,6 +17,7 @@ message1 = Message
          { messageType = "message"
          , messageUser = Just "user1"
          , messageText = Just "text1"
+         , messageAttachments = Just [attachment0, attachment1]
          }
 
 spec :: Spec
