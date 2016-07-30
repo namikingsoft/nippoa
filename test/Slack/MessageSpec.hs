@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 module Slack.MessageSpec where
 
 import Slack.Message

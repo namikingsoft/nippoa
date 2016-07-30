@@ -1,5 +1,5 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
-
 module Slack.ChannelList where
 
 import Control.Applicative

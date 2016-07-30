@@ -1,5 +1,5 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
-
 module Slack.Channel where
 
 import Control.Applicative

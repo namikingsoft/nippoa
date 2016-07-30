@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 module Slack.ChannelSpec where
 
 import Slack.Channel

@@ -1,5 +1,5 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
-
 module Slack.ChannelHistory where
 
 import Control.Applicative

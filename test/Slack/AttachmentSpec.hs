@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 module Slack.AttachmentSpec where
 
 import Slack.Attachment
