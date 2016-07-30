@@ -3,36 +3,36 @@ module Index
   ( execute
   ) where
 
-import System.IO
-import System.Environment
-import Control.Applicative
-import Network.HTTP.Conduit
-import Text.Printf
+import System.IO (hSetEncoding, stdout, utf8)
+import System.Environment (getEnv)
 import Data.Maybe
-import Data.Aeson
-import Data.ByteString.Lazy.Char8 (unpack)
+import Data.Time.Format
 
 import Slack.GroupsList
-import Slack.ChannelHistory
+import Slack.History
 import Slack.Channel
 import Slack.Message
+import Slack.Network
 
 execute :: IO ()
 execute = do
     hSetEncoding stdout utf8
     token <- getEnv "SLACK_API_TOKEN"
     channelName <- getEnv "SLACK_CHANNEL_NAME"
-    json <- simpleHttp . printf urlGroupsList $ token
-    putStrLn ""
-    putStrLn $ unpack json
+    json <- getJsonFromGroupsList token
     let groupsList = parseGroupsList json
         maybeChannel = fromGroupsName groupsList channelName
         channel = fromMaybe (error "Channel Not Found") maybeChannel
-    print channel
-    json <- simpleHttp $ printf urlGroupsHistory token (channelId channel)
-    putStrLn $ unpack json
-    let messages = channelHistoryMessages $ parseChannelHistory json
-    mapM_ (\x -> putStrLn $ fromMaybe "" $ messageText x) messages
+    json <- getJsonFromGroupsHistory token (channelId channel)
+    let messages = historyMessages $ parseHistory json
+    mapM_ echoMessage messages
+
+echoMessage :: Message -> IO ()
+echoMessage x = do
+    echoTime x
+    echoText x
+    putStrLn ""
   where
-    urlGroupsList = "https://slack.com/api/groups.list?token=%s"
-    urlGroupsHistory = "https://slack.com/api/groups.history?token=%s&channel=%s"
+    echoTime = putStr . format . messageDateTime
+    echoText = putStr . fromMaybe "" . messageText
+    format = formatTime defaultTimeLocale "%F %T"
