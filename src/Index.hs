@@ -28,8 +28,7 @@ execute = do
         channel = fromMaybe (error "Channel Not Found") maybeChannel
     (date, isToday) <- getDate
     json <- getJsonFromGroupsHistory token (channelId channel) date isToday
-    let messages = historyMessages $ parseHistory json
-    mapM_ echoMessage messages
+    putStrLn . concat . map messageTemplate . historyMessages . parseHistory $ json
 
 getDate :: IO (String, Bool)
 getDate = do
@@ -38,28 +37,3 @@ getDate = do
     return $ case length args of
       1 -> (args !! 0, False)
       otherwise -> (zonedToDate currentTime, True)
-
-echoMessage :: Message -> IO ()
-echoMessage x = do
-    echoTime x
-    putStr "  "
-    echoText x
-    putStrLn ""
-    echoAttachments x
-  where
-    format = formatTime defaultTimeLocale "%F %T"
-    echoTime = putStr . format . messageDateTime
-    echoText = putStr . toMarkdown . fromMaybe "" . messageText
-    justAttachmentText = fromMaybe "" . attachmentText
-    justAttachments = fromMaybe [] . messageAttachments
-    echoAttachments x = mapM_ echoAttachment $ justAttachments x
-    echoAttachment x = do
-      putStr "> "
-      putStrLn $ attachmentFallback x
-      putStr "> "
-      putStrLn $ toMarkdown . attachmentFallback $ x
-      putStrLn . pre $ justAttachmentText x
-      putStrLn ""
-    pre x
-      | x == "" = x
-      | otherwise = "```\n" ++ x ++ "\n```"

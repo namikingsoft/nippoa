@@ -7,6 +7,7 @@ import Data.Time.LocalTime
 import Data.Time.Format
 import Data.Time.Clock
 import Data.Aeson
+import Data.Maybe
 import Text.Regex
 import Codec.Binary.UTF8.String (encodeString, decodeString)
 
@@ -52,3 +53,25 @@ toMarkdown =
     toMarkdownOnlyLink x = subRegex regexOnlyLink x "[\\1](\\1)"
     regexWithLabel = mkRegex "<([^<>\\|]+)\\|([^<>]+)>"
     regexOnlyLink = mkRegex "<([^<>\\|]+)>"
+
+messageTemplate :: Message -> String
+messageTemplate x =
+    time x ++ "  " ++ text x ++ "\n" ++ attachments x
+  where
+    formatDate = formatTime defaultTimeLocale "%F %T"
+    time = formatDate . messageDateTime
+    text = toMarkdown . fromMaybe "" . messageText
+    justAttachmentText x
+      | normal x == attachmentFallback x = ""
+      | otherwise = normal x
+      where
+        normal = fromMaybe "" . attachmentText
+    justAttachments = fromMaybe [] . messageAttachments
+    attachments = concat . map attachment . justAttachments
+    attachment x =
+      "> " ++ (toMarkdown . attachmentFallback) x ++
+      "\n" ++ (pre . toMarkdown . justAttachmentText) x ++ "\n"
+    pre :: String -> String
+    pre x
+      | x == "" = x
+      | otherwise = "```\n" ++ x ++ "\n```"

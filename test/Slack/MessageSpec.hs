@@ -55,6 +55,12 @@ spec = do
       format (messageDateTime message0) `shouldBe` "2016-07-29 14:01:18"
       format (messageDateTime message1) `shouldBe` "2016-07-29 14:01:18"
 
+  describe "messageTemplate" $ do
+    it "should return template text of message" $ do
+      messageTemplate message0 `shouldBe`
+        "2016-07-29 14:01:18  text0\n" ++
+        "> fallback0\n```\ntext0\n```\n> fallback1\n```\ntext1\n```\n"
+
   describe "toMarkdown" $ do
     it "should return text to markdown" $ do
       let md1 = toMarkdown "<http://example.com/>"
