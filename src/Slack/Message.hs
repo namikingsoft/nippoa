@@ -45,15 +45,6 @@ messageDateTime = zonedTime . utcTime . messageTs
     utcTime x = parseTimeOrError True defaultTimeLocale "%s%Q" x :: UTCTime
     jst = hoursToTimeZone 9
 
-toMarkdown :: String -> String
-toMarkdown =
-    decodeString . toMarkdownOnlyLink . toMarkdownWithLabel . encodeString
-  where
-    toMarkdownWithLabel x = subRegex regexWithLabel x "[\\2](\\1)"
-    toMarkdownOnlyLink x = subRegex regexOnlyLink x "[\\1](\\1)"
-    regexWithLabel = mkRegex "<([^<>\\|]+)\\|([^<>]+)>"
-    regexOnlyLink = mkRegex "<([^<>\\|]+)>"
-
 messageTemplate :: Message -> String
 messageTemplate x =
     time x ++ "  " ++ text x ++ "\n" ++ attachments x
@@ -75,3 +66,12 @@ messageTemplate x =
     pre x
       | x == "" = x
       | otherwise = "```\n" ++ x ++ "\n```"
+
+toMarkdown :: String -> String
+toMarkdown =
+    decodeString . toMarkdownOnlyLink . toMarkdownWithLabel . encodeString
+  where
+    toMarkdownWithLabel x = subRegex regexWithLabel x "[\\2](\\1)"
+    toMarkdownOnlyLink x = subRegex regexOnlyLink x "[\\1](\\1)"
+    regexWithLabel = mkRegex "<([^<>\\|]+)\\|([^<>]+)>"
+    regexOnlyLink = mkRegex "<([^<>\\|]+)>"
