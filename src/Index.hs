@@ -23,11 +23,16 @@ execute = do
     token <- getEnv "SLACK_API_TOKEN"
     channelName <- getEnv "SLACK_CHANNEL_NAME"
     json <- getJsonFromGroupsList token
-    let channel = channelId . fromMaybe (error "Channel Not Found") .
-                  fromGroupsName channelName . parseGroupsList $ json
+    let channel = channelByNameFromJson channelName json
     (date, isToday) <- getDate
     json <- getJsonFromGroupsHistory token channel date isToday
-    putStrLn . concat . map messageTemplate . historyMessages . parseHistory $ json
+    putStrLn . messagesTextFrom $ json
+  where
+    channelByNameFromJson name =
+      channelId . fromMaybe (error "Channel Not Found") .
+      fromGroupsName name . parseGroupsList
+    messagesTextFrom =
+      concat . reverse . map messageTemplate . historyMessages . parseHistory
 
 getDate :: IO (String, Bool)
 getDate = do
