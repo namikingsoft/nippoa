@@ -47,9 +47,9 @@ messageDateTime = zonedTime . utcTime . messageTs
 
 messageTemplate :: Message -> String
 messageTemplate x =
-    time x ++ "  " ++ text x ++ "\n" ++ attachments x
+    time x ++ text x ++ "\n" ++ attachments x
   where
-    formatDate = formatTime defaultTimeLocale "%F %T"
+    formatDate = formatTime defaultTimeLocale "[%F %T] "
     time = formatDate . messageDateTime
     text = toMarkdown . fromMaybe "" . messageText
     justAttachmentText x
@@ -60,12 +60,15 @@ messageTemplate x =
     justAttachments = fromMaybe [] . messageAttachments
     attachments = concat . map attachment . justAttachments
     attachment x =
-      "> " ++ (toMarkdown . attachmentFallback) x ++
+      "> " ++ (toMarkdown . attachmentFallback) x ++ "\n" ++
       "\n" ++ (pre . toMarkdown . justAttachmentText) x ++ "\n"
     pre :: String -> String
     pre x
       | x == "" = x
-      | otherwise = "```\n" ++ x ++ "\n```"
+      | otherwise = concat . map addSite . splitLine $ x
+      where
+        splitLine = splitRegex (mkRegex "\n")
+        addSite x = "> " ++ x ++ "\n" :: String
 
 toMarkdown :: String -> String
 toMarkdown =
