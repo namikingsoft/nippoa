@@ -8,12 +8,12 @@
       "text": "text0",
       "attachments": [
         {
-          "fallback": "<http://example.com/>",
+          "fallback": "fallback0",
           "title": "title0",
           "text": "text0"
         },
         {
-          "fallback": "<http://example.com/|Example>",
+          "fallback": "fallback1",
           "title": "title1",
           "text": "text1"
         }
@@ -26,12 +26,12 @@
       "text": "text1",
       "attachments": [
         {
-          "fallback": "<http://example.com/>",
+          "fallback": "fallback0",
           "title": "title0",
           "text": "text0"
         },
         {
-          "fallback": "<http://example.com/|Example>",
+          "fallback": "fallback1",
           "title": "title1",
           "text": "text1"
         }

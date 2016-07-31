@@ -54,3 +54,14 @@ spec = do
       let format = formatTime defaultTimeLocale "%F %T"
       format (messageDateTime message0) `shouldBe` "2016-07-29 14:01:18"
       format (messageDateTime message1) `shouldBe` "2016-07-29 14:01:18"
+
+  describe "toMarkdown" $ do
+    it "should return headline text" $ do
+      let md1 = toMarkdown "<http://example.com/>"
+          md2 = toMarkdown "<http://example.com/|Example>"
+          md3 = toMarkdown "<http://example.com/|テスト>"
+          md4 = toMarkdown "<http://example.com/|証明>"
+      md1 `shouldBe` "[http://example.com/](http://example.com/)"
+      md2 `shouldBe` "[Example](http://example.com/)"
+      md3 `shouldBe` "[テスト](http://example.com/)"
+      md3 `shouldBe` "[証明](http://example.com/)"

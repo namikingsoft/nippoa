@@ -38,13 +38,15 @@ echoMessage x = do
   where
     format = formatTime defaultTimeLocale "%F %T"
     echoTime = putStr . format . messageDateTime
-    echoText = putStr . fromMaybe "" . messageText
+    echoText = putStr . toMarkdown . fromMaybe "" . messageText
     justAttachmentText = fromMaybe "" . attachmentText
     justAttachments = fromMaybe [] . messageAttachments
     echoAttachments x = mapM_ echoAttachment $ justAttachments x
     echoAttachment x = do
       putStr "> "
       putStrLn $ attachmentFallback x
+      putStr "> "
+      putStrLn $ toMarkdown . attachmentFallback $ x
       putStrLn . pre $ justAttachmentText x
       putStrLn ""
     pre x
