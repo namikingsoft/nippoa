@@ -56,12 +56,14 @@ spec = do
       format (messageDateTime message1) `shouldBe` "2016-07-29 14:01:18"
 
   describe "toMarkdown" $ do
-    it "should return headline text" $ do
+    it "should return text to markdown" $ do
       let md1 = toMarkdown "<http://example.com/>"
           md2 = toMarkdown "<http://example.com/|Example>"
           md3 = toMarkdown "<http://example.com/|テスト>"
-          md4 = toMarkdown "<http://example.com/|証明>"
+          md4 = toMarkdown "<http://example.com/|認証明>" -- fail Unicode '証'
+          md5 = toMarkdown "<http://example.com/|あ　い>" -- fail Unicode '　'
       md1 `shouldBe` "[http://example.com/](http://example.com/)"
       md2 `shouldBe` "[Example](http://example.com/)"
       md3 `shouldBe` "[テスト](http://example.com/)"
-      md3 `shouldBe` "[証明](http://example.com/)"
+      md4 `shouldBe` "[認証明](http://example.com/)"
+      md5 `shouldBe` "[あ　い](http://example.com/)"
