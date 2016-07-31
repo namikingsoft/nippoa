@@ -41,7 +41,7 @@ messageDateTime :: Message -> ZonedTime
 messageDateTime = zonedTime . utcTime . messageTs
   where
     zonedTime x = utcToZonedTime jst x
-    utcTime x = readTime defaultTimeLocale "%s%Q" x :: UTCTime
+    utcTime x = parseTimeOrError True defaultTimeLocale "%s%Q" x :: UTCTime
     jst = hoursToTimeZone 9
 
 toMarkdown :: String -> String
