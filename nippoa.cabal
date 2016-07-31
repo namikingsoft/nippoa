@@ -28,6 +28,7 @@ library
                      , aeson ==0.11.2.0
                      , bytestring ==0.10.6.0
                      , time ==1.5.0.1
+                     , regex-compat ==0.95.1
   default-language:    Haskell2010
 
 executable nippoa-exe

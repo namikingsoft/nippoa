@@ -4,12 +4,13 @@ module Slack.Attachment where
 
 import Control.Applicative
 import Data.Aeson
+import Text.Regex
 
 data Attachment = Attachment
-             { attachmentFallback :: String
-             , attachmentTitle :: Maybe String
-             , attachmentText :: Maybe String
-             } deriving (Show, Eq)
+                { attachmentFallback :: String
+                , attachmentTitle :: Maybe String
+                , attachmentText :: Maybe String
+                } deriving (Show, Eq)
 
 instance FromJSON Attachment where
   parseJSON (Object v) = Attachment
@@ -23,3 +24,12 @@ instance ToJSON Attachment where
     , "title" .= title
     , "text" .= text
     ]
+
+attachmentHeadline :: Attachment -> String
+attachmentHeadline =
+    toMarkdownWithLabel . toMarkdownOnlyLink . attachmentFallback
+  where
+    toMarkdownWithLabel x = subRegex regexWithLabel x "[\\2](\\1)"
+    toMarkdownOnlyLink x = subRegex regexOnlyLink x "[\\1](\\1)"
+    regexWithLabel = mkRegex "<([^>\\|]+)\\|([^>]+)>"
+    regexOnlyLink = mkRegex "<([^>\\|]+)>"
