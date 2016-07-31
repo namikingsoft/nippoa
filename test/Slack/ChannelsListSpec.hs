@@ -41,6 +41,6 @@ spec = do
 
   describe "fromChannelName" $ do
     it "should return maybe channel" $ do
-      fromChannelName channelsList "general" `shouldBe` Just channel0
-      fromChannelName channelsList "random"  `shouldBe` Just channel1
-      fromChannelName channelsList "nothing" `shouldBe` Nothing
+      fromChannelName "general" channelsList `shouldBe` Just channel0
+      fromChannelName "random"  channelsList `shouldBe` Just channel1
+      fromChannelName "nothing" channelsList `shouldBe` Nothing

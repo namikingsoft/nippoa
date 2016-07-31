@@ -31,8 +31,8 @@ parseChannelsList json = channelsList
     maybeChannelsList = decode json :: Maybe ChannelsList
     channelsList = fromMaybe (error "Parse Error") maybeChannelsList
 
-fromChannelName :: ChannelsList -> String -> Maybe Channel
-fromChannelName result name
+fromChannelName :: String -> ChannelsList -> Maybe Channel
+fromChannelName name result
   | length hits > 0 = Just $ hits !! 0
   | otherwise = Nothing
   where 
