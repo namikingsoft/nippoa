@@ -68,8 +68,12 @@ spec = do
           md3 = toMarkdown "<http://example.com/|テスト>"
           md4 = toMarkdown "<http://example.com/|認証明>" -- fail Unicode '証'
           md5 = toMarkdown "<http://example.com/|あ　い>" -- fail Unicode '　'
+          md6 = toMarkdown "<http://example.com/a.jpg>"
+          md7 = toMarkdown "<http://example.com/a.jpeg|Example>"
       md1 `shouldBe` "[http://example.com/](http://example.com/)"
       md2 `shouldBe` "[Example](http://example.com/)"
       md3 `shouldBe` "[テスト](http://example.com/)"
       md4 `shouldBe` "[認証明](http://example.com/)"
       md5 `shouldBe` "[あ　い](http://example.com/)"
+      md6 `shouldBe` "![http://example.com/a.jpg](http://example.com/a.jpg)"
+      md7 `shouldBe` "![Example](http://example.com/a.jpeg)"

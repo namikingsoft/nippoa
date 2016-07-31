@@ -69,9 +69,11 @@ messageTemplate x =
 
 toMarkdown :: String -> String
 toMarkdown =
-    decodeString . toMarkdownOnlyLink . toMarkdownWithLabel . encodeString
+    decodeString . toImageIfExists . toMarkdownOnlyLink . toMarkdownWithLabel . encodeString
   where
     toMarkdownWithLabel x = subRegex regexWithLabel x "[\\2](\\1)"
     toMarkdownOnlyLink x = subRegex regexOnlyLink x "[\\1](\\1)"
+    toImageIfExists x = subRegex regexWithImage x "!\\1"
     regexWithLabel = mkRegex "<([^<>\\|]+)\\|([^<>]+)>"
     regexOnlyLink = mkRegex "<([^<>\\|]+)>"
+    regexWithImage = mkRegex "(\\[[^\\]*\\]\\([^\\)]+\\.(gif|png|jpe?g)\\))"
