@@ -4,6 +4,7 @@ module Slack.Network where
 import Text.Printf
 import Data.ByteString.Lazy.Internal
 import Network.HTTP.Conduit
+import Data.Time.LocalTime
 import Data.Time.Format
 import Data.Time.Clock
 
@@ -13,11 +14,17 @@ getJsonFromGroupsList token =
   where
     urlGroupsList = "https://slack.com/api/groups.list?token=%s"
 
-getJsonFromGroupsHistory :: String -> String -> IO ByteString
-getJsonFromGroupsHistory token channel =
-    simpleHttp $ printf urlGroupsHistory token channel
+getJsonFromGroupsHistory :: String -> String -> String -> Bool -> IO ByteString
+getJsonFromGroupsHistory token channel date isToday =
+    simpleHttp $ printf urlGroupsHistory token channel oldest latest
   where
-    urlGroupsHistory = "https://slack.com/api/groups.history?token=%s&channel=%s"
+    urlGroupsHistory =
+      "https://slack.com/api/groups.history?" ++
+      "token=%s&channel=%s&count=1000&oldest=%s&latest=%s"
+    oldest = dateToEpoch date
+    latest
+      | isToday = ""
+      | otherwise = dateToEpoch $ show $ (read date :: Int) + 1
 
 dateToEpoch :: String -> String
 dateToEpoch =
@@ -25,6 +32,7 @@ dateToEpoch =
   where
     dateToUTCTime x =
       parseTimeOrError True defaultTimeLocale "%Y%m%d%z" (x++"+0900") :: UTCTime
+    utcToEpoch = formatTime defaultTimeLocale "%s.%q"
 
-utcToEpoch :: UTCTime -> String
-utcToEpoch = formatTime defaultTimeLocale "%s.%q"
+zonedToDate :: ZonedTime -> String
+zonedToDate = formatTime defaultTimeLocale "%Y%m%d"

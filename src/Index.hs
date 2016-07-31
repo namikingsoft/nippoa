@@ -4,9 +4,11 @@ module Index
   ) where
 
 import System.IO (hSetEncoding, stdout, utf8)
-import System.Environment (getEnv)
+import System.Environment (getEnv, getArgs)
 import Data.Maybe
+import Data.Time.LocalTime
 import Data.Time.Format
+import Data.Time.Clock
 
 import Slack.Attachment
 import Slack.GroupsList
@@ -24,9 +26,18 @@ execute = do
     let groupsList = parseGroupsList json
         maybeChannel = fromGroupsName groupsList channelName
         channel = fromMaybe (error "Channel Not Found") maybeChannel
-    json <- getJsonFromGroupsHistory token (channelId channel)
+    (date, isToday) <- getDate
+    json <- getJsonFromGroupsHistory token (channelId channel) date isToday
     let messages = historyMessages $ parseHistory json
     mapM_ echoMessage messages
+
+getDate :: IO (String, Bool)
+getDate = do
+    args <- getArgs
+    currentTime <- getZonedTime
+    return $ case length args of
+      1 -> (args !! 0, False)
+      otherwise -> (zonedToDate currentTime, True)
 
 echoMessage :: Message -> IO ()
 echoMessage x = do

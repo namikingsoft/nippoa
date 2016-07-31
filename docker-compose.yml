@@ -8,6 +8,7 @@ services:
       - ./app:/app/app
       - ./src:/app/src
       - ./test:/app/test
+      - ./bin:/app/bin
       - ./stack.yaml:/app/stack.yaml
       - ./nippoa.cabal:/app/nippoa.cabal
       - ./.env:/app/.env
