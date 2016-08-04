@@ -45,6 +45,13 @@ test-suite nippoa-test
   main-is:             HSpec.hs
   hs-source-dirs:      test
   ghc-options:         -Wall
+  other-modules:       Slack.AttachmentSpec
+                     , Slack.ChannelSpec
+                     , Slack.ChannelsListSpec
+                     , Slack.GroupsListSpec
+                     , Slack.HistorySpec
+                     , Slack.MessageSpec
+                     , Slack.NetworkSpec
   build-depends:       base
                      , hspec ==2.2.3
                      , nippoa
