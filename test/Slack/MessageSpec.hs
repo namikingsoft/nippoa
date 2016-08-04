@@ -5,7 +5,6 @@ import Slack.Message
 import Test.Hspec
 import Slack.AttachmentSpec
 
-import Data.Time.LocalTime
 import Data.Time.Format
 
 message0 :: Message
