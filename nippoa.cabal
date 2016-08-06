@@ -46,7 +46,8 @@ test-suite nippoa-test
   main-is:             HSpec.hs
   hs-source-dirs:      test
   ghc-options:         -Wall
-  other-modules:       Nippoa.Record.TimeStampSpec
+  other-modules:       IndexSpec
+                     , Nippoa.Record.TimeStampSpec
                      , Slack.AttachmentSpec
                      , Slack.ChannelSpec
                      , Slack.ChannelsListSpec
