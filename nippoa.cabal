@@ -16,6 +16,7 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     Index
+                     , Nippoa.Record.TimeStamp
                      , Slack.GroupsList
                      , Slack.ChannelsList
                      , Slack.Channel
@@ -45,7 +46,8 @@ test-suite nippoa-test
   main-is:             HSpec.hs
   hs-source-dirs:      test
   ghc-options:         -Wall
-  other-modules:       Slack.AttachmentSpec
+  other-modules:       Nippoa.Record.TimeStampSpec
+                     , Slack.AttachmentSpec
                      , Slack.ChannelSpec
                      , Slack.ChannelsListSpec
                      , Slack.GroupsListSpec
