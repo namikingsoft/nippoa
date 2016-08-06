@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-module Nippoa.Record.TimeStamp
+module Nippoa.Value.TimeStamp
   ( TimeStamp (..)
   , timeStampFromTs
   ) where

@@ -1,7 +1,7 @@
 {-# LANGUAGE CPP #-}
-module Nippoa.Record.UserSpec where
+module Nippoa.Value.UserSpec where
 
-import Nippoa.Record.User
+import Nippoa.Value.User
 import Test.Hspec
 
 user0 :: User
