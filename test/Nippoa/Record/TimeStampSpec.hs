@@ -4,7 +4,6 @@ module Nippoa.Record.TimeStampSpec where
 import Nippoa.Record.TimeStamp
 import Test.Hspec
 
-import Data.Time.LocalTime
 import Data.Time.Format
 import Data.Time.Clock
 
