@@ -8,6 +8,7 @@ attachment0 :: Attachment
 attachment0 = Attachment
             { attachmentFallback = "fallback0"
             , attachmentTitle = Just "title0"
+            , attachmentTitleLink = Just "titlelink0"
             , attachmentText = Just "text0"
             }
 
@@ -15,6 +16,7 @@ attachment1 :: Attachment
 attachment1 = Attachment
             { attachmentFallback = "fallback1"
             , attachmentTitle = Just "title1"
+            , attachmentTitleLink = Just "titlelink1"
             , attachmentText = Just "text1"
             }
 
@@ -30,6 +32,11 @@ spec = do
     it "should return initial value" $ do
       attachmentTitle attachment0 `shouldBe` Just "title0"
       attachmentTitle attachment1 `shouldBe` Just "title1"
+
+  describe "attachmentTitleLink" $ do
+    it "should return initial value" $ do
+      attachmentTitleLink attachment0 `shouldBe` Just "titlelink0"
+      attachmentTitleLink attachment1 `shouldBe` Just "titlelink1"
 
   describe "attachmentText" $ do
     it "should return initial value" $ do
