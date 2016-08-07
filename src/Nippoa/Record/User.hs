@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-module Nippoa.Value.User
+module Nippoa.Record.User
   ( User (..)
   ) where
 

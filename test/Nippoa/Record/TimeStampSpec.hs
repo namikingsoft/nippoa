@@ -1,7 +1,7 @@
 {-# LANGUAGE CPP #-}
-module Nippoa.Value.TimeStampSpec where
+module Nippoa.Record.TimeStampSpec where
 
-import Nippoa.Value.TimeStamp
+import Nippoa.Record.TimeStamp
 import Test.Hspec
 
 import Data.Time.LocalTime
