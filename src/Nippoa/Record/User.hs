@@ -3,6 +3,7 @@ module Nippoa.Record.User
   ( User (..)
   ) where
 
-data User = User
-          { userId :: String
-          } deriving (Show, Eq)
+newtype User
+  = User
+  { userId :: String
+  } deriving (Show, Eq)

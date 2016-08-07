@@ -19,9 +19,10 @@ import Data.Time.Clock
   ( UTCTime
   )
 
-data TimeStamp = TimeStamp
-               { timeStampUTCTime :: UTCTime
-               } deriving (Show, Eq)
+newtype TimeStamp
+  = TimeStamp
+  { timeStampUTCTime :: UTCTime
+  } deriving (Show, Eq)
 
 timeStampFromTs :: String -> TimeStamp
 timeStampFromTs = TimeStamp . utcFromTs
