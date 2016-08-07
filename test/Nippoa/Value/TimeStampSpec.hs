@@ -8,24 +8,27 @@ import Data.Time.LocalTime
 import Data.Time.Format
 import Data.Time.Clock
 
-zonedtime0 :: ZonedTime
-zonedtime0 = utcToZonedTime jst . utcFromTs $ "2016-07-29 14:01:18"
+utctime0 :: UTCTime
+utctime0 = utcFromTs "2016-07-29 05:01:18"
   where
     utcFromTs x = parseTimeOrError True defaultTimeLocale "%F %T" x :: UTCTime
-    jst = hoursToTimeZone 9
 
 timestamp0 :: TimeStamp
-timestamp0 = TimeStamp zonedtime0
+timestamp0 = TimeStamp utctime0
 
 spec :: Spec
 spec = do
 
-  describe "timeStampZonedTime" $ do
+  describe "timeStampUTCTime" $ do
     it "should return initial value" $ do
-      show (timeStampZonedTime timestamp0) `shouldBe` show zonedtime0
+      timeStampUTCTime timestamp0 `shouldBe` utctime0
 
   describe "timeStampFromTs" $ do
     it "should return new instance from timestamp of slack" $ do
       let format = formatTime defaultTimeLocale "%F %T"
-          zonedtime = timeStampZonedTime . timeStampFromTs $ "1469768478.000747"
-      format zonedtime `shouldBe` "2016-07-29 14:01:18"
+          utctime = timeStampUTCTime . timeStampFromTs $ "1469768478.000747"
+      format utctime `shouldBe` "2016-07-29 05:01:18"
+
+  describe "timeStampFromTs" $ do
+    it "should return timestamp text of jst" $ do
+      timeStampToText timestamp0 `shouldBe` "2016-07-29 14:01:18"

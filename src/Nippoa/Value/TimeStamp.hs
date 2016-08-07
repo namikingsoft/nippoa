@@ -2,6 +2,7 @@
 module Nippoa.Value.TimeStamp
   ( TimeStamp (..)
   , timeStampFromTs
+  , timeStampToText
   ) where
 
 import Data.Time.LocalTime
@@ -10,7 +11,8 @@ import Data.Time.LocalTime
   , hoursToTimeZone
   )
 import Data.Time.Format
-  ( parseTimeOrError
+  ( formatTime
+  , parseTimeOrError
   , defaultTimeLocale
   )
 import Data.Time.Clock
@@ -18,11 +20,16 @@ import Data.Time.Clock
   )
 
 data TimeStamp = TimeStamp
-               { timeStampZonedTime :: ZonedTime
-               } deriving (Show)
+               { timeStampUTCTime :: UTCTime
+               } deriving (Show, Eq)
 
 timeStampFromTs :: String -> TimeStamp
-timeStampFromTs = TimeStamp . utcToZonedTime jst . utcFromTs
+timeStampFromTs = TimeStamp . utcFromTs
   where
     utcFromTs x = parseTimeOrError True defaultTimeLocale "%s%Q" x :: UTCTime
+
+timeStampToText :: TimeStamp -> String
+timeStampToText = format . utcToZonedTime jst . timeStampUTCTime
+  where
+    format = formatTime defaultTimeLocale "%F %T"
     jst = hoursToTimeZone 9
