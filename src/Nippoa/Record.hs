@@ -21,6 +21,7 @@ import Nippoa.Record.User
   )
 import Slack.Message
   ( Message(..)
+  , toMarkdown
   )
 import Slack.Attachment
   ( Attachment(..)
@@ -40,24 +41,23 @@ data Record
   } deriving (Show, Eq)
 
 recordByMessage :: Message -> Record
-recordByMessage x
-  | attachTitleLink x /= "" =
+recordByMessage x = case messageAttachments x of
+  Just ys | attachesTitleLink ys /= "" ->
       Link
     { linkTimeStamp = timeStampFromTs . messageTs $ x
     , linkUser = User . fromMaybe "" . messageUser $ x
-    , linkText = attachTitle $ x
-    , linkHref = attachTitleLink $ x
+    , linkText = attachesTitle ys
+    , linkHref = attachesTitleLink ys
     }
-  | otherwise =
+  otherwise ->
       Plain
     { plainTimeStamp = timeStampFromTs . messageTs $ x
     , plainUser = User . fromMaybe "" . messageUser $ x
-    , plainText = fromMaybe "" . messageText $ x
+    , plainText = toMarkdown . fromMaybe "" . messageText $ x
     }
   where
-    attachTitle = fromMaybe "" . attachmentTitle . attach
-    attachTitleLink =  fromMaybe "" . attachmentTitleLink . attach
-    attach = head . fromMaybe [] . messageAttachments
+    attachesTitle = fromMaybe "" . attachmentTitle . head
+    attachesTitleLink =  fromMaybe "" . attachmentTitleLink . head
 
 recordRender :: Record -> String
 recordRender (Plain time user text) =
