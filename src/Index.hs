@@ -10,7 +10,7 @@ import Data.Time.LocalTime
 import Data.Time.Format
 import Data.Time.Clock
 
-import Slack.Attachment
+import Nippoa.Record
 import Slack.GroupsList
 import Slack.History
 import Slack.Channel
@@ -32,7 +32,9 @@ execute = do
       channelId . fromMaybe (error "Channel Not Found") .
       fromGroupsName name . parseGroupsList
     messagesTextFrom =
-      concat . reverse . map messageTemplate . historyMessages . parseHistory
+      concat . reverse . map record . historyMessages . parseHistory
+    record = newline . recordRender . recordByMessage
+    newline x = x ++ "\n"
 
 getDate :: IO (String, Bool)
 getDate = do
