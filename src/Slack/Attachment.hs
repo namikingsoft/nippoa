@@ -1,16 +1,30 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Slack.Attachment where
+module Slack.Attachment
+  ( Attachment(..)
+  ) where
 
 import Control.Applicative
+  ( (<$>)
+  , (<*>)
+  )
 import Data.Aeson
+  ( Value(..)
+  , FromJSON(..)
+  , ToJSON(..)
+  , object
+  , (.:)
+  , (.:?)
+  , (.=)
+  )
 
-data Attachment = Attachment
-                { attachmentFallback :: String
-                , attachmentTitle :: Maybe String
-                , attachmentTitleLink :: Maybe String
-                , attachmentText :: Maybe String
-                } deriving (Show, Eq)
+data Attachment
+  = Attachment
+  { attachmentFallback :: String
+  , attachmentTitle :: Maybe String
+  , attachmentTitleLink :: Maybe String
+  , attachmentText :: Maybe String
+  } deriving (Show, Eq)
 
 instance FromJSON Attachment where
   parseJSON (Object v) = Attachment

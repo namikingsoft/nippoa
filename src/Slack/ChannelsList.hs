@@ -1,13 +1,34 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Slack.ChannelsList where
+module Slack.ChannelsList
+  ( ChannelsList(..)
+  , parseChannelsList
+  , fromChannelName
+  ) where
 
 import Control.Applicative
-import Data.Maybe
+  ( (<$>)
+  , (<*>)
+  )
 import Data.Aeson
+  ( Value(..)
+  , FromJSON(..)
+  , ToJSON(..)
+  , object
+  , decode
+  , (.:)
+  , (.:?)
+  , (.=)
+  )
+import Data.Maybe
+  ( fromMaybe
+  )
 import Data.ByteString.Lazy.Internal
-
+  ( ByteString
+  )
 import Slack.Channel
+  ( Channel(..)
+  )
 
 data ChannelsList = ChannelsList
                   { channelsListOk :: Bool

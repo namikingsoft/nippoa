@@ -1,18 +1,39 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Slack.History where
+module Slack.History
+  ( History(..)
+  , parseHistory
+  ) where
 
 import Control.Applicative
-import Data.Maybe
+  ( (<$>)
+  , (<*>)
+  )
 import Data.Aeson
+  ( Value(..)
+  , FromJSON(..)
+  , ToJSON(..)
+  , object
+  , decode
+  , (.:)
+  , (.:?)
+  , (.=)
+  )
+import Data.Maybe
+  ( fromMaybe
+  )
 import Data.ByteString.Lazy.Internal
-
+  ( ByteString
+  )
 import Slack.Message
+  ( Message(..)
+  )
 
-data History = History
-             { historyOk :: Bool
-             , historyMessages :: [Message]
-             } deriving (Show, Eq)
+data History
+  = History
+  { historyOk :: Bool
+  , historyMessages :: [Message]
+  } deriving (Show, Eq)
 
 instance FromJSON History where
   parseJSON (Object v) = History

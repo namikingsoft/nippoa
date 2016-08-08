@@ -1,13 +1,34 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Slack.GroupsList where
+module Slack.GroupsList
+  ( GroupsList(..)
+  , parseGroupsList
+  , fromGroupsName
+  ) where
 
 import Control.Applicative
-import Data.Maybe
+  ( (<$>)
+  , (<*>)
+  )
 import Data.Aeson
+  ( Value(..)
+  , FromJSON(..)
+  , ToJSON(..)
+  , object
+  , decode
+  , (.:)
+  , (.:?)
+  , (.=)
+  )
+import Data.Maybe
+  ( fromMaybe
+  )
 import Data.ByteString.Lazy.Internal
-
+  ( ByteString
+  )
 import Slack.Channel
+  ( Channel(..)
+  )
 
 data GroupsList = GroupsList
                 { groupsListOk :: Bool

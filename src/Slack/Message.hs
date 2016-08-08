@@ -1,25 +1,62 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Slack.Message where
+module Slack.Message
+  ( Message(..)
+  , messageDateTime
+  , messageTemplate
+  , toMarkdown
+  ) where
 
 import Control.Applicative
-import Data.Time.LocalTime
-import Data.Time.Format
-import Data.Time.Clock
+  ( (<$>)
+  , (<*>)
+  )
 import Data.Aeson
+  ( Value(..)
+  , FromJSON(..)
+  , ToJSON(..)
+  , object
+  , (.:)
+  , (.:?)
+  , (.=)
+  )
 import Data.Maybe
+  ( fromMaybe
+  )
+import Data.Time.LocalTime
+  ( ZonedTime
+  , hoursToTimeZone
+  , utcToZonedTime
+  )
+import Data.Time.Format
+  ( formatTime
+  , parseTimeOrError
+  , defaultTimeLocale
+  )
+import Data.Time.Clock
+  ( UTCTime
+  )
 import Text.Regex
-import Codec.Binary.UTF8.String (encodeString, decodeString)
-
+  ( mkRegex
+  , subRegex
+  , splitRegex
+  )
+import Codec.Binary.UTF8.String
+  ( encodeString
+  , decodeString
+  )
 import Slack.Attachment
+  ( Attachment(..)
+  )
 
-data Message = Message
-             { messageTs :: String
-             , messageType :: String
-             , messageUser :: Maybe String
-             , messageText :: Maybe String
-             , messageAttachments :: Maybe [Attachment]
-             } deriving (Show, Eq)
+data Message
+  = Message
+  { messageTs :: String
+  , messageType :: String
+  , messageUser :: Maybe String
+  , messageText :: Maybe String
+  , messageAttachments :: Maybe [Attachment]
+  } deriving (Show, Eq)
 
 instance FromJSON Message where
   parseJSON (Object v) = Message

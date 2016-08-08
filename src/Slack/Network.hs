@@ -1,12 +1,31 @@
 {-# LANGUAGE CPP #-}
-module Slack.Network where
+module Slack.Network
+  ( getJsonFromGroupsList
+  , getJsonFromGroupsHistory
+  , dateToEpoch
+  , zonedToDate
+  ) where
 
 import Text.Printf
+  ( printf
+  )
 import Data.ByteString.Lazy.Internal
+  ( ByteString
+  )
 import Network.HTTP.Conduit
+  ( simpleHttp
+  )
 import Data.Time.LocalTime
+  ( ZonedTime
+  )
 import Data.Time.Format
+  ( formatTime
+  , parseTimeOrError
+  , defaultTimeLocale
+  )
 import Data.Time.Clock
+  ( UTCTime
+  )
 
 getJsonFromGroupsList :: String -> IO ByteString
 getJsonFromGroupsList token =
