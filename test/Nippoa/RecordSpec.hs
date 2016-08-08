@@ -59,9 +59,9 @@ spec = do
     it "should return initial value" $ do
       linkHref link `shouldBe` "href1"
 
-  describe "createByMessage" $ do
+  describe "recordByMessage" $ do
     it "should create record by slack message" $ do
-      let result = case createByMessage message0 of
+      let result = case recordByMessage message0 of
             Link a b c d -> Just (a, b, c, d)
             _ -> Nothing
           (time, user, text, href) = fromMaybe (error "") result
@@ -69,3 +69,8 @@ spec = do
       timeStampToText time `shouldBe` "2016-07-29 14:01:18"
       text `shouldBe` "title0"
       href `shouldBe` "titlelink0"
+
+  describe "recordRender" $ do
+    it "should return text of rendered record" $ do
+      recordRender plain `shouldBe` "[2016-07-29 14:01:18] text0"
+      recordRender link `shouldBe` "[2016-07-29 14:01:18] [text1](href1)"

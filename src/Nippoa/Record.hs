@@ -1,15 +1,20 @@
 {-# LANGUAGE CPP #-}
 module Nippoa.Record
   ( Record(..)
-  , createByMessage
+  , recordByMessage
+  , recordRender
   ) where
 
+import Text.Printf
+  ( printf
+  )
 import Data.Maybe
   ( fromMaybe
   )
 import Nippoa.Record.TimeStamp
   ( TimeStamp(..)
   , timeStampFromTs
+  , timeStampToText
   )
 import Nippoa.Record.User
   ( User(..)
@@ -34,8 +39,8 @@ data Record
   , linkHref :: String
   } deriving (Show, Eq)
 
-createByMessage :: Message -> Record
-createByMessage x
+recordByMessage :: Message -> Record
+recordByMessage x
   | attachTitleLink x /= "" =
       Link
     { linkTimeStamp = timeStampFromTs . messageTs $ x
@@ -53,3 +58,9 @@ createByMessage x
     attachTitle = fromMaybe "" . attachmentTitle . attach
     attachTitleLink =  fromMaybe "" . attachmentTitleLink . attach
     attach = head . fromMaybe [] . messageAttachments
+
+recordRender :: Record -> String
+recordRender (Plain time user text) =
+    printf "[%s] %s" (timeStampToText time) text
+recordRender (Link time user text link) =
+    printf "[%s] [%s](%s)" (timeStampToText time) text link
