@@ -13,6 +13,7 @@ message0 = Message
          , messageType = "message"
          , messageUser = Just "user0"
          , messageText = Just "text0"
+         , messageBotId = Just "botid0"
          , messageAttachments = Just [attachment0, attachment1]
          }
 
@@ -22,6 +23,7 @@ message1 = Message
          , messageType = "message"
          , messageUser = Just "user1"
          , messageText = Just "text1"
+         , messageBotId = Just "botid1"
          , messageAttachments = Just [attachment0, attachment1]
          }
 
@@ -47,6 +49,11 @@ spec = do
     it "should return initial value" $ do
       messageText message0 `shouldBe` Just "text0"
       messageText message1 `shouldBe` Just "text1"
+
+  describe "messageBotId" $ do
+    it "should return initial value" $ do
+      messageBotId message0 `shouldBe` Just "botid0"
+      messageBotId message1 `shouldBe` Just "botid1"
 
   describe "messageDateTime" $ do
     it "should return initial value" $ do

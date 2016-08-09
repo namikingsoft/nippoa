@@ -6,18 +6,21 @@
       "type": "message",
       "user": "user0",
       "text": "text0",
+      "bot_id": "botid0",
       "attachments": [
         {
           "fallback": "fallback0",
           "title": "title0",
           "title_link": "titlelink0",
-          "text": "text0"
+          "text": "text0",
+          "pretext": "pretext0"
         },
         {
           "fallback": "fallback1",
           "title": "title1",
           "title_link": "titlelink1",
-          "text": "text1"
+          "text": "text1",
+          "pretext": "pretext1"
         }
       ]
     },
@@ -26,18 +29,21 @@
       "type": "message",
       "user": "user1",
       "text": "text1",
+      "bot_id": "botid1",
       "attachments": [
         {
           "fallback": "fallback0",
           "title": "title0",
           "title_link": "titlelink0",
-          "text": "text0"
+          "text": "text0",
+          "pretext": "pretext0"
         },
         {
           "fallback": "fallback1",
           "title": "title1",
           "title_link": "titlelink1",
-          "text": "text1"
+          "text": "text1",
+          "pretext": "pretext1"
         }
       ]
     }

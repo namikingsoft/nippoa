@@ -10,6 +10,7 @@ attachment0 = Attachment
             , attachmentTitle = Just "title0"
             , attachmentTitleLink = Just "titlelink0"
             , attachmentText = Just "text0"
+            , attachmentPreText = Just "pretext0"
             }
 
 attachment1 :: Attachment
@@ -18,6 +19,7 @@ attachment1 = Attachment
             , attachmentTitle = Just "title1"
             , attachmentTitleLink = Just "titlelink1"
             , attachmentText = Just "text1"
+            , attachmentPreText = Just "pretext1"
             }
 
 spec :: Spec
@@ -42,3 +44,8 @@ spec = do
     it "should return initial value" $ do
       attachmentText attachment0 `shouldBe` Just "text0"
       attachmentText attachment1 `shouldBe` Just "text1"
+
+  describe "attachmentPreText" $ do
+    it "should return initial value" $ do
+      attachmentPreText attachment0 `shouldBe` Just "pretext0"
+      attachmentPreText attachment1 `shouldBe` Just "pretext1"

@@ -55,6 +55,7 @@ data Message
   , messageType :: String
   , messageUser :: Maybe String
   , messageText :: Maybe String
+  , messageBotId :: Maybe String
   , messageAttachments :: Maybe [Attachment]
   } deriving (Show, Eq)
 
@@ -64,14 +65,16 @@ instance FromJSON Message where
     <*> v .: "type"
     <*> v .:? "user"
     <*> v .:? "text"
+    <*> v .:? "bot_id"
     <*> v .:? "attachments"
 
 instance ToJSON Message where
-  toJSON (Message ts type' user text attachments) = object
+  toJSON (Message ts type' user text botId attachments) = object
     [ "ts" .= ts
     , "type" .= type'
     , "user" .= user
     , "text" .= text
+    , "bot_id" .= botId
     , "attachments" .= attachments
     ]
 
