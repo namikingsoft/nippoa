@@ -5,16 +5,18 @@ import Slack.Channel
 import Test.Hspec
 
 channel0 :: Channel
-channel0 = Channel
-         { channelId = "id0"
-         , channelName = "general"
-         }
+channel0
+  = Channel
+  { channelId = "id0"
+  , channelName = "general"
+  }
 
 channel1 :: Channel
-channel1 = Channel
-         { channelId = "id1"
-         , channelName = "random"
-         }
+channel1
+  = Channel
+  { channelId = "id1"
+  , channelName = "random"
+  }
 
 spec :: Spec
 spec = do

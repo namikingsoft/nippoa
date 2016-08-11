@@ -11,10 +11,11 @@ import Data.ByteString.Lazy.Char8 (pack)
 import Slack.ChannelSpec
 
 channelsList :: ChannelsList
-channelsList = ChannelsList
-             { channelsListOk = True
-             , channelsListChannels = [channel0, channel1]
-             }
+channelsList
+  = ChannelsList
+  { channelsListOk = True
+  , channelsListChannels = [channel0, channel1]
+  }
 
 spec :: Spec
 spec = do

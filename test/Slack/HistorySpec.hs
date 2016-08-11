@@ -11,10 +11,11 @@ import Data.ByteString.Lazy.Char8 (pack)
 import Slack.MessageSpec
 
 history :: History
-history = History
-        { historyOk = True
-        , historyMessages = [message0, message1]
-        }
+history
+  = History
+  { historyOk = True
+  , historyMessages = [message0, message1]
+  }
 
 spec :: Spec
 spec = do

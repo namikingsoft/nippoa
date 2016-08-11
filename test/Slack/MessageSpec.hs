@@ -8,24 +8,26 @@ import Slack.AttachmentSpec
 import Data.Time.Format
 
 message0 :: Message
-message0 = Message
-         { messageTs = "1469768478.000747"
-         , messageType = "message"
-         , messageUser = Just "user0"
-         , messageText = Just "text0"
-         , messageBotId = Just "botid0"
-         , messageAttachments = Just [attachment0, attachment1]
-         }
+message0
+  = Message
+  { messageTs = "1469768478.000747"
+  , messageType = "message"
+  , messageUser = Just "user0"
+  , messageText = Just "text0"
+  , messageBotId = Just "botid0"
+  , messageAttachments = Just [attachment0, attachment1]
+  }
 
 message1 :: Message
-message1 = Message
-         { messageTs = "1469768478.000747"
-         , messageType = "message"
-         , messageUser = Just "user1"
-         , messageText = Just "text1"
-         , messageBotId = Just "botid1"
-         , messageAttachments = Just [attachment0, attachment1]
-         }
+message1
+  = Message
+  { messageTs = "1469768478.000747"
+  , messageType = "message"
+  , messageUser = Just "user1"
+  , messageText = Just "text1"
+  , messageBotId = Just "botid1"
+  , messageAttachments = Just [attachment0, attachment1]
+  }
 
 spec :: Spec
 spec = do

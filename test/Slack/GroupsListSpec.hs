@@ -11,10 +11,11 @@ import Data.ByteString.Lazy.Char8 (pack)
 import Slack.ChannelSpec
 
 groupsList :: GroupsList
-groupsList = GroupsList
-           { groupsListOk = True
-           , groupsListGroups = [channel0, channel1]
-           }
+groupsList
+  = GroupsList
+  { groupsListOk = True
+  , groupsListGroups = [channel0, channel1]
+  }
 
 spec :: Spec
 spec = do

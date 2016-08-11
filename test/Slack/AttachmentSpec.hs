@@ -5,22 +5,24 @@ import Slack.Attachment
 import Test.Hspec
 
 attachment0 :: Attachment
-attachment0 = Attachment
-            { attachmentFallback = "fallback0"
-            , attachmentTitle = Just "title0"
-            , attachmentTitleLink = Just "titlelink0"
-            , attachmentText = Just "text0"
-            , attachmentPreText = Just "pretext0"
-            }
+attachment0
+  = Attachment
+  { attachmentFallback = "fallback0"
+  , attachmentTitle = Just "title0"
+  , attachmentTitleLink = Just "titlelink0"
+  , attachmentText = Just "text0"
+  , attachmentPreText = Just "pretext0"
+  }
 
 attachment1 :: Attachment
-attachment1 = Attachment
-            { attachmentFallback = "fallback1"
-            , attachmentTitle = Just "title1"
-            , attachmentTitleLink = Just "titlelink1"
-            , attachmentText = Just "text1"
-            , attachmentPreText = Just "pretext1"
-            }
+attachment1
+  = Attachment
+  { attachmentFallback = "fallback1"
+  , attachmentTitle = Just "title1"
+  , attachmentTitleLink = Just "titlelink1"
+  , attachmentText = Just "text1"
+  , attachmentPreText = Just "pretext1"
+  }
 
 spec :: Spec
 spec = do
