@@ -7,6 +7,7 @@
       "profile": {
         "real_name": "realname0",
         "image_24": "image240",
+        "image_48": "image480",
         "bot_id": "botid0"
       }
     },
@@ -16,6 +17,7 @@
       "profile": {
         "real_name": "realname1",
         "image_24": "image241",
+        "image_48": "image481",
         "bot_id": "botid1"
       }
     }
