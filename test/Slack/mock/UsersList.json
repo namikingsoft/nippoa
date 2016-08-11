@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "members": [
+    {
+      "id": "id0",
+      "name": "user0",
+      "profile": {
+        "real_name": "realname0",
+        "image_24": "image240",
+        "bot_id": "botid0"
+      }
+    },
+    {
+      "id": "id1",
+      "name": "user1",
+      "profile": {
+        "real_name": "realname1",
+        "image_24": "image241",
+        "bot_id": "botid1"
+      }
+    }
+  ]
+}

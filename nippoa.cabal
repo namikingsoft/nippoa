@@ -25,6 +25,9 @@ library
                      , Slack.History
                      , Slack.Message
                      , Slack.Attachment
+                     , Slack.UsersList
+                     , Slack.User
+                     , Slack.Profile
                      , Slack.Network
   build-depends:       base >= 4.7 && < 5
                      , http-conduit ==2.1.11
@@ -58,6 +61,9 @@ test-suite nippoa-test
                      , Slack.GroupsListSpec
                      , Slack.HistorySpec
                      , Slack.MessageSpec
+                     , Slack.UsersListSpec
+                     , Slack.UserSpec
+                     , Slack.ProfileSpec
                      , Slack.NetworkSpec
   build-depends:       base
                      , hspec ==2.2.3
