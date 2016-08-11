@@ -30,10 +30,11 @@ import Slack.Channel
   ( Channel(..)
   )
 
-data ChannelsList = ChannelsList
-                  { channelsListOk :: Bool
-                  , channelsListChannels :: [Channel]
-                  } deriving (Show, Eq)
+data ChannelsList
+  = ChannelsList
+  { channelsListOk :: Bool
+  , channelsListChannels :: [Channel]
+  } deriving (Show, Eq)
 
 instance FromJSON ChannelsList where
   parseJSON (Object v) = ChannelsList
