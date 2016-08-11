@@ -11,6 +11,7 @@ import Data.Time.Format
 import Data.Time.Clock
 
 import Nippoa.Record
+import Nippoa.RecordFactory
 import Slack.UsersList
 import Slack.GroupsList
 import Slack.History

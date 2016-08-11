@@ -17,6 +17,7 @@ library
   hs-source-dirs:      src
   exposed-modules:     Index
                      , Nippoa.Record
+                     , Nippoa.RecordFactory
                      , Nippoa.Record.User
                      , Nippoa.Record.TimeStamp
                      , Slack.GroupsList
@@ -53,6 +54,7 @@ test-suite nippoa-test
   ghc-options:         -Wall
   other-modules:       IndexSpec
                      , Nippoa.RecordSpec
+                     , Nippoa.RecordFactorySpec
                      , Nippoa.Record.UserSpec
                      , Nippoa.Record.TimeStampSpec
                      , Slack.AttachmentSpec

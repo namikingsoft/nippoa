@@ -5,11 +5,7 @@ import Nippoa.Record
 import Test.Hspec
 
 import Nippoa.Record.TimeStampSpec
-import Nippoa.Record.TimeStamp
 import Nippoa.Record.UserSpec
-import Nippoa.Record.User
-import Slack.MessageSpec
-import Data.Maybe
 
 plain :: Record
 plain
@@ -58,17 +54,6 @@ spec = do
   describe "linkHref" $ do
     it "should return initial value" $ do
       linkHref link `shouldBe` "href1"
-
-  describe "recordByMessage" $ do
-    it "should create record by slack message" $ do
-      let result = case recordByMessage message0 of
-            Link a b c d -> Just (a, b, c, d)
-            _ -> Nothing
-          (time, user, text, href) = fromMaybe (error "") result
-      userId user `shouldBe` "user0"
-      timeStampToText time `shouldBe` "2016-07-29 14:01:18"
-      text `shouldBe` "title0"
-      href `shouldBe` "titlelink0"
 
   describe "recordRender" $ do
     it "should return text of rendered record" $ do
