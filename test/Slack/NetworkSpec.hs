@@ -4,14 +4,15 @@ module Slack.NetworkSpec where
 import Slack.Network
 import Test.Hspec
 
-import Data.Time.Format
-import Data.Time.Clock
-
 spec :: Spec
 spec = do
 
+  describe "getJsonFromUsersHistory" $ do
+    it "should return json of users list" $ do
+      pending
+
   describe "getJsonFromGroupsHistory" $ do
-    it "should return json of groups history" $ do
+    it "should return json of groups list" $ do
       pending
 
   describe "getJsonFromGroupsList" $ do

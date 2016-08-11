@@ -1,6 +1,7 @@
 {-# LANGUAGE CPP #-}
 module Slack.Network
-  ( getJsonFromGroupsList
+  ( getJsonFromUsersList
+  , getJsonFromGroupsList
   , getJsonFromGroupsHistory
   , dateToEpoch
   , zonedToDate
@@ -27,17 +28,21 @@ import Data.Time.Clock
   ( UTCTime
   )
 
-getJsonFromGroupsList :: String -> IO ByteString
-getJsonFromGroupsList token =
-    simpleHttp . printf urlGroupsList $ token
+getJsonFromUsersList :: String -> IO ByteString
+getJsonFromUsersList = simpleHttp . printf url
   where
-    urlGroupsList = "https://slack.com/api/groups.list?token=%s"
+    url = "https://slack.com/api/users.list?token=%s"
+
+getJsonFromGroupsList :: String -> IO ByteString
+getJsonFromGroupsList = simpleHttp . printf url
+  where
+    url = "https://slack.com/api/groups.list?token=%s"
 
 getJsonFromGroupsHistory :: String -> String -> String -> Bool -> IO ByteString
 getJsonFromGroupsHistory token channel date isToday =
-    simpleHttp $ printf urlGroupsHistory token channel oldest latest
+    simpleHttp $ printf url token channel oldest latest
   where
-    urlGroupsHistory =
+    url =
       "https://slack.com/api/groups.history?" ++
       "token=%s&channel=%s&count=1000&oldest=%s&latest=%s"
     oldest = dateToEpoch date

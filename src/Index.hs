@@ -11,6 +11,7 @@ import Data.Time.Format
 import Data.Time.Clock
 
 import Nippoa.Record
+import Slack.UsersList
 import Slack.GroupsList
 import Slack.History
 import Slack.Channel
@@ -22,6 +23,8 @@ execute = do
     hSetEncoding stdout utf8
     token <- getEnv "SLACK_API_TOKEN"
     channelName <- getEnv "SLACK_CHANNEL_NAME"
+    json <- getJsonFromUsersList token
+    let usersList = parseUsersList json
     json <- getJsonFromGroupsList token
     let channel = channelByNameFromJson channelName json
     (date, isToday) <- getDate
