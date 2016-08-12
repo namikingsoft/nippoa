@@ -2,7 +2,6 @@
 module Slack.GroupsListSpec where
 
 import Slack.GroupsList
-import Slack.Channel
 import Test.Hspec
 
 import System.FilePath.Posix
@@ -40,8 +39,8 @@ spec = do
       let json = "{\"okk\": true}"
       evaluate (parseGroupsList $ pack json) `shouldThrow` anyErrorCall
 
-  describe "fromGroupsName" $ do
-    it "should return maybe channel" $ do
-      fromGroupsName "general" groupsList0 `shouldBe` Just channel0
-      fromGroupsName "random"  groupsList0 `shouldBe` Just channel1
-      fromGroupsName "nothing" groupsList0 `shouldBe` Nothing
+  describe "channelByGroupsName" $ do
+    it "should return maybe channel by name" $ do
+      channelByGroupsName groupsList0 "general" `shouldBe` Just channel0
+      channelByGroupsName groupsList0 "random"  `shouldBe` Just channel1
+      channelByGroupsName groupsList0 "nothing" `shouldBe` Nothing

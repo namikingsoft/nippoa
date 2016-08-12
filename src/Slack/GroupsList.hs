@@ -3,7 +3,7 @@
 module Slack.GroupsList
   ( GroupsList(..)
   , parseGroupsList
-  , fromGroupsName
+  , channelByGroupsName
   ) where
 
 import Control.Applicative
@@ -53,9 +53,9 @@ parseGroupsList json = groupsList
     maybeGroupsList = decode json :: Maybe GroupsList
     groupsList = fromMaybe (error "Parse Error") maybeGroupsList
 
-fromGroupsName :: String -> GroupsList -> Maybe Channel
-fromGroupsName name result
+channelByGroupsName :: GroupsList -> String -> Maybe Channel
+channelByGroupsName this name
   | length hits > 0 = Just $ hits !! 0
   | otherwise = Nothing
   where 
-    hits = filter (\x -> (channelName x) == name) $ groupsListGroups result
+    hits = filter (\x -> name == channelName x) $ groupsListGroups this

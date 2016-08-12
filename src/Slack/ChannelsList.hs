@@ -3,7 +3,7 @@
 module Slack.ChannelsList
   ( ChannelsList(..)
   , parseChannelsList
-  , fromChannelName
+  , channelByChannelsName
   ) where
 
 import Control.Applicative
@@ -53,9 +53,9 @@ parseChannelsList json = channelsList
     maybeChannelsList = decode json :: Maybe ChannelsList
     channelsList = fromMaybe (error "Parse Error") maybeChannelsList
 
-fromChannelName :: String -> ChannelsList -> Maybe Channel
-fromChannelName name result
+channelByChannelsName :: ChannelsList -> String -> Maybe Channel
+channelByChannelsName this name
   | length hits > 0 = Just $ hits !! 0
   | otherwise = Nothing
   where 
-    hits = filter (\x -> (channelName x) == name) $ channelsListChannels result
+    hits = filter (\x -> name == channelName x) $ channelsListChannels this

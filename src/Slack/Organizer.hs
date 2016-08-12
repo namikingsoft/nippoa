@@ -27,7 +27,7 @@ import Slack.UsersList
   )
 import Slack.GroupsList
   ( GroupsList(..)
-  , fromGroupsName
+  , channelByGroupsName
   )
 import Slack.Message
   ( Message(..)
@@ -66,4 +66,4 @@ recordByMessage this x = case messageAttachments x of
     attachesTitleLink =  fromMaybe "" . attachmentTitleLink . head
 
 channelByName :: Organizer -> String -> Maybe Channel
-channelByName this name = fromGroupsName name $ groupsList this
+channelByName this = channelByGroupsName $ groupsList this

@@ -2,7 +2,6 @@
 module Slack.ChannelsListSpec where
 
 import Slack.ChannelsList
-import Slack.Channel
 import Test.Hspec
 
 import System.FilePath.Posix
@@ -40,8 +39,8 @@ spec = do
       let json = "{\"okk\": true}"
       evaluate (parseChannelsList $ pack json) `shouldThrow` anyErrorCall
 
-  describe "fromChannelName" $ do
-    it "should return maybe channel" $ do
-      fromChannelName "general" channelsList `shouldBe` Just channel0
-      fromChannelName "random"  channelsList `shouldBe` Just channel1
-      fromChannelName "nothing" channelsList `shouldBe` Nothing
+  describe "channelByChannelsName" $ do
+    it "should return maybe channel by name" $ do
+      channelByChannelsName channelsList "general" `shouldBe` Just channel0
+      channelByChannelsName channelsList "random"  `shouldBe` Just channel1
+      channelByChannelsName channelsList "nothing" `shouldBe` Nothing
