@@ -13,6 +13,7 @@ import Data.Time.Clock
 import Nippoa.Record
 import Slack.UsersList
 import Slack.GroupsList
+import Slack.ChannelsList
 import Slack.History
 import Slack.Channel
 import Slack.Message
@@ -26,7 +27,7 @@ execute = do
     channelName <- getEnv "SLACK_CHANNEL_NAME"
     organizer <- getOrganizer token
     (date, isToday) <- getDate
-    let channel = channelId . returnChannel $ channelByName organizer channelName
+    let channel = returnChannel $ channelByName organizer channelName
     json <- getJsonFromGroupsHistory token channel date isToday
     putStrLn . messagesTextFrom organizer $ json
   where
@@ -48,7 +49,9 @@ getOrganizer :: String -> IO Organizer
 getOrganizer token = do
     json1 <- getJsonFromUsersList token
     json2 <- getJsonFromGroupsList token
+    json3 <- getJsonFromChannelsList token
     return Organizer
       { usersList = parseUsersList json1
       , groupsList = parseGroupsList json2
+      , channelsList = parseChannelsList json3
       }

@@ -14,23 +14,26 @@ import Data.Aeson
   , ToJSON(..)
   , object
   , (.:)
+  , (.:?)
   , (.=)
   )
---import Prelude hiding (id)
 
 data Channel
   = Channel
   { channelId :: String
   , channelName :: String
+  , channelIsGroup :: Maybe Bool
   } deriving (Show, Eq)
 
 instance FromJSON Channel where
   parseJSON (Object v) = Channel
     <$> v .: "id"
     <*> v .: "name"
+    <*> v .:? "is_group"
 
 instance ToJSON Channel where
-  toJSON (Channel id name) = object
+  toJSON (Channel id name isGroup) = object
     [ "id"   .= id
     , "name" .= name
+    , "is_group" .= isGroup
     ]

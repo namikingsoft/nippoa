@@ -2,12 +2,9 @@
   "ok": true,
   "groups": [
     {
-      "id": "id0",
-      "name": "general"
-    },
-    {
-      "id": "id1",
-      "name": "random"
+      "id": "id2",
+      "name": "private",
+      "is_group": true
     }
   ]
 }

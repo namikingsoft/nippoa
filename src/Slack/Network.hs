@@ -2,6 +2,7 @@
 module Slack.Network
   ( getJsonFromUsersList
   , getJsonFromGroupsList
+  , getJsonFromChannelsList
   , getJsonFromGroupsHistory
   , dateToEpoch
   , zonedToDate
@@ -27,6 +28,9 @@ import Data.Time.Format
 import Data.Time.Clock
   ( UTCTime
   )
+import Slack.Channel
+  ( Channel(..)
+  )
 
 getJsonFromUsersList :: String -> IO ByteString
 getJsonFromUsersList = simpleHttp . printf url
@@ -38,13 +42,25 @@ getJsonFromGroupsList = simpleHttp . printf url
   where
     url = "https://slack.com/api/groups.list?token=%s"
 
-getJsonFromGroupsHistory :: String -> String -> String -> Bool -> IO ByteString
-getJsonFromGroupsHistory token channel date isToday =
-    simpleHttp $ printf url token channel oldest latest
+getJsonFromChannelsList :: String -> IO ByteString
+getJsonFromChannelsList = simpleHttp . printf url
   where
-    url =
-      "https://slack.com/api/groups.history?" ++
-      "token=%s&channel=%s&count=1000&oldest=%s&latest=%s"
+    url = "https://slack.com/api/channels.list?token=%s"
+
+getJsonFromGroupsHistory :: String -> Channel -> String -> Bool -> IO ByteString
+getJsonFromGroupsHistory token channel date isToday =
+  case channelIsGroup channel of
+    Just isGroup | isGroup ->
+      simpleHttp $ printf urlGroups token (channelId channel) oldest latest
+    otherwise ->
+      simpleHttp $ printf urlChannels token (channelId channel) oldest latest
+  where
+    urlGroups =
+      "https://slack.com/api/groups.history" ++ params
+    urlChannels =
+      "https://slack.com/api/channels.history" ++ params
+    params =
+      "?token=%s&channel=%s&count=1000&oldest=%s&latest=%s"
     oldest = dateToEpoch date
     latest
       | isToday = ""

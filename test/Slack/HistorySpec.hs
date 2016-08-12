@@ -2,7 +2,6 @@
 module Slack.HistorySpec where
 
 import Slack.History
-import Slack.Message
 import Test.Hspec
 
 import System.FilePath.Posix

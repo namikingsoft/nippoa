@@ -29,6 +29,10 @@ import Slack.GroupsList
   ( GroupsList(..)
   , channelByGroupsName
   )
+import Slack.ChannelsList
+  ( ChannelsList(..)
+  , channelByChannelsName
+  )
 import Slack.Message
   ( Message(..)
   , toMarkdown
@@ -44,6 +48,7 @@ data Organizer
   = Organizer
   { usersList :: UsersList
   , groupsList :: GroupsList
+  , channelsList :: ChannelsList
   }
 
 recordByMessage :: Organizer -> Message -> Record
@@ -66,4 +71,11 @@ recordByMessage this x = case messageAttachments x of
     attachesTitleLink =  fromMaybe "" . attachmentTitleLink . head
 
 channelByName :: Organizer -> String -> Maybe Channel
-channelByName this = channelByGroupsName $ groupsList this
+channelByName this name = case maybeChannel1 of
+    Just channel1 -> maybeChannel1
+    otherwise -> case maybeChannel2 of
+      Just channel2 -> maybeChannel2
+      othersize -> Nothing
+  where
+    maybeChannel1 = channelByGroupsName (groupsList this) name
+    maybeChannel2 = channelByChannelsName (channelsList this) name

@@ -13,7 +13,7 @@ groupsList0 :: GroupsList
 groupsList0
   = GroupsList
   { groupsListOk = True
-  , groupsListGroups = [channel0, channel1]
+  , groupsListGroups = [channel2]
   }
 
 spec :: Spec
@@ -26,9 +26,8 @@ spec = do
   describe "groupsListGroups" $ do
     it "should return initial value" $ do
       let list = groupsListGroups groupsList0
-      length list `shouldBe` 2
-      list !! 0 `shouldBe` channel0
-      list !! 1 `shouldBe` channel1
+      length list `shouldBe` 1
+      list !! 0 `shouldBe` channel2
 
   describe "parseGroupsList" $ do
     it "should return parsed from json" $ do
@@ -41,6 +40,5 @@ spec = do
 
   describe "channelByGroupsName" $ do
     it "should return maybe channel by name" $ do
-      channelByGroupsName groupsList0 "general" `shouldBe` Just channel0
-      channelByGroupsName groupsList0 "random"  `shouldBe` Just channel1
+      channelByGroupsName groupsList0 "private" `shouldBe` Just channel2
       channelByGroupsName groupsList0 "nothing" `shouldBe` Nothing
