@@ -9,8 +9,8 @@ import Control.Exception (evaluate)
 import Data.ByteString.Lazy.Char8 (pack)
 import Slack.UserSpec
 
-usersList :: UsersList
-usersList
+usersList0 :: UsersList
+usersList0
   = UsersList
   { usersListOk = True
   , usersListUsers = [user0, user1]
@@ -21,11 +21,11 @@ spec = do
 
   describe "usersListOk" $ do
     it "should return initial value" $ do
-      usersListOk usersList `shouldBe` True
+      usersListOk usersList0 `shouldBe` True
 
   describe "usersListUsers" $ do
     it "should return initial value" $ do
-      let list = usersListUsers usersList
+      let list = usersListUsers usersList0
       length list `shouldBe` 2
       list !! 0 `shouldBe` user0
       list !! 1 `shouldBe` user1
@@ -34,13 +34,13 @@ spec = do
     it "should return parsed from json" $ do
       let jsonPath = joinPath [takeDirectory __FILE__,"mock","UsersList.json"]
       json <- readFile jsonPath
-      parseUsersList (pack json) `shouldBe` usersList
+      parseUsersList (pack json) `shouldBe` usersList0
     it "should call error when parse error" $ do
       let json = "{\"okk\": true}"
       evaluate (parseUsersList $ pack json) `shouldThrow` anyErrorCall
 
   describe "userById" $ do
     it "should return maybe user by id" $ do
-      userById "id0" usersList `shouldBe` Just user0
-      userById "id1" usersList `shouldBe` Just user1
-      userById "nothing" usersList `shouldBe` Nothing
+      userById "id0" usersList0 `shouldBe` Just user0
+      userById "id1" usersList0 `shouldBe` Just user1
+      userById "nothing" usersList0 `shouldBe` Nothing

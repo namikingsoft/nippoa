@@ -1,6 +1,7 @@
 {-# LANGUAGE CPP #-}
 module Nippoa.RecordFactory
-  ( recordByMessage
+  ( RecordFactory(..)
+  , recordByMessage
   ) where
 
 import Text.Printf
@@ -20,6 +21,9 @@ import Nippoa.Record.TimeStamp
 import Nippoa.Record.Author
   ( Author(..)
   )
+import Slack.UsersList
+  ( UsersList(..)
+  )
 import Slack.Message
   ( Message(..)
   , toMarkdown
@@ -28,8 +32,13 @@ import Slack.Attachment
   ( Attachment(..)
   )
 
-recordByMessage :: Message -> Record
-recordByMessage x = case messageAttachments x of
+data RecordFactory
+  = RecordFactory
+  { usersList :: UsersList
+  }
+
+recordByMessage :: RecordFactory -> Message -> Record
+recordByMessage factory x = case messageAttachments x of
   Just ys | attachesTitleLink ys /= "" ->
       Link
     { linkTimeStamp = timeStampFromTs . messageTs $ x

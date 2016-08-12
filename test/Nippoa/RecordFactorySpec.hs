@@ -7,15 +7,21 @@ import Test.Hspec
 import Nippoa.Record
 import Nippoa.Record.TimeStamp
 import Nippoa.Record.Author
+import Slack.UsersListSpec
 import Slack.MessageSpec
 import Data.Maybe
+
+factory :: RecordFactory
+factory = RecordFactory
+  { usersList = usersList0
+  }
 
 spec :: Spec
 spec = do
 
   describe "recordByMessage" $ do
     it "should create record by slack message" $ do
-      let result = case recordByMessage message0 of
+      let result = case recordByMessage factory message0 of
             Link a b c d -> Just (a, b, c, d)
             _ -> Nothing
       let (time, author, text, href) = fromMaybe (error "") result
