@@ -6,7 +6,7 @@ import Test.Hspec
 
 import Nippoa.Record
 import Nippoa.Record.TimeStamp
-import Nippoa.Record.User
+import Nippoa.Record.Author
 import Slack.MessageSpec
 import Data.Maybe
 
@@ -18,8 +18,8 @@ spec = do
       let result = case recordByMessage message0 of
             Link a b c d -> Just (a, b, c, d)
             _ -> Nothing
-          (time, user, text, href) = fromMaybe (error "") result
-      userId user `shouldBe` "user0"
+      let (time, author, text, href) = fromMaybe (error "") result
+      authorId author `shouldBe` "user0"
       timeStampToText time `shouldBe` "2016-07-29 14:01:18"
       text `shouldBe` "title0"
       href `shouldBe` "titlelink0"

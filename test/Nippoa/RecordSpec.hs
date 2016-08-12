@@ -5,13 +5,13 @@ import Nippoa.Record
 import Test.Hspec
 
 import Nippoa.Record.TimeStampSpec
-import Nippoa.Record.UserSpec
+import Nippoa.Record.AuthorSpec
 
 plain :: Record
 plain
   = Plain
   { plainTimeStamp = timestamp0
-  , plainUser = user0
+  , plainAuthor = author0
   , plainText = "text0"
   }
 
@@ -19,7 +19,7 @@ link :: Record
 link
   = Link
   { linkTimeStamp = timestamp0
-  , linkUser = user0
+  , linkAuthor = author0
   , linkText = "text1"
   , linkHref = "href1"
   }
@@ -31,9 +31,9 @@ spec = do
     it "should return initial value" $ do
       plainTimeStamp plain `shouldBe` timestamp0
 
-  describe "plainUser" $ do
+  describe "plainAuthor" $ do
     it "should return initial value" $ do
-      plainUser plain `shouldBe` user0
+      plainAuthor plain `shouldBe` author0
 
   describe "plainText" $ do
     it "should return initial value" $ do
@@ -43,9 +43,9 @@ spec = do
     it "should return initial value" $ do
       linkTimeStamp link `shouldBe` timestamp0
 
-  describe "linkUser" $ do
+  describe "linkAuthor" $ do
     it "should return initial value" $ do
-      linkUser link `shouldBe` user0
+      linkAuthor link `shouldBe` author0
 
   describe "linkText" $ do
     it "should return initial value" $ do

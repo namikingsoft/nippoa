@@ -17,8 +17,8 @@ import Nippoa.Record.TimeStamp
   , timeStampFromTs
   , timeStampToText
   )
-import Nippoa.Record.User
-  ( User(..)
+import Nippoa.Record.Author
+  ( Author(..)
   )
 import Slack.Message
   ( Message(..)
@@ -33,14 +33,14 @@ recordByMessage x = case messageAttachments x of
   Just ys | attachesTitleLink ys /= "" ->
       Link
     { linkTimeStamp = timeStampFromTs . messageTs $ x
-    , linkUser = User . fromMaybe "" . messageUser $ x
+    , linkAuthor = Author . fromMaybe "" . messageUser $ x
     , linkText = attachesTitle ys
     , linkHref = attachesTitleLink ys
     }
   otherwise ->
       Plain
     { plainTimeStamp = timeStampFromTs . messageTs $ x
-    , plainUser = User . fromMaybe "" . messageUser $ x
+    , plainAuthor = Author . fromMaybe "" . messageUser $ x
     , plainText = toMarkdown . fromMaybe "" . messageText $ x
     }
   where

@@ -11,25 +11,25 @@ import Nippoa.Record.TimeStamp
   ( TimeStamp(..)
   , timeStampToText
   )
-import Nippoa.Record.User
-  ( User(..)
+import Nippoa.Record.Author
+  ( Author(..)
   )
 
 data Record
   = Plain
   { plainTimeStamp :: TimeStamp
-  , plainUser :: User
+  , plainAuthor :: Author
   , plainText :: String
   }
   | Link
   { linkTimeStamp :: TimeStamp
-  , linkUser :: User
+  , linkAuthor :: Author
   , linkText :: String
   , linkHref :: String
   } deriving (Show, Eq)
 
 recordRender :: Record -> String
-recordRender (Plain time user text) =
+recordRender (Plain time author text) =
     printf "[%s] %s" (timeStampToText time) text
-recordRender (Link time user text link) =
+recordRender (Link time author text link) =
     printf "[%s] [%s](%s)" (timeStampToText time) text link

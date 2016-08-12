@@ -18,7 +18,7 @@ library
   exposed-modules:     Index
                      , Nippoa.Record
                      , Nippoa.RecordFactory
-                     , Nippoa.Record.User
+                     , Nippoa.Record.Author
                      , Nippoa.Record.TimeStamp
                      , Slack.GroupsList
                      , Slack.ChannelsList
@@ -55,7 +55,7 @@ test-suite nippoa-test
   other-modules:       IndexSpec
                      , Nippoa.RecordSpec
                      , Nippoa.RecordFactorySpec
-                     , Nippoa.Record.UserSpec
+                     , Nippoa.Record.AuthorSpec
                      , Nippoa.Record.TimeStampSpec
                      , Slack.AttachmentSpec
                      , Slack.ChannelSpec
