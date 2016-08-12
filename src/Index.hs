@@ -25,15 +25,12 @@ execute = do
     token <- getEnv "SLACK_API_TOKEN"
     channelName <- getEnv "SLACK_CHANNEL_NAME"
     organizer <- getOrganizer token
-    json <- getJsonFromGroupsList token
-    let channel = channelByNameFromJson channelName json
     (date, isToday) <- getDate
+    let channel = channelId . returnChannel $ channelByName organizer channelName
     json <- getJsonFromGroupsHistory token channel date isToday
     putStrLn . messagesTextFrom organizer $ json
   where
-    channelByNameFromJson name =
-      channelId . fromMaybe (error "Channel Not Found") .
-      fromGroupsName name . parseGroupsList
+    returnChannel = fromMaybe (error "Channel Not Found")
     messagesTextFrom organizer =
       concat . reverse . map (record organizer) . historyMessages . parseHistory
     record organizer = newline . recordRender . recordByMessage organizer
@@ -50,6 +47,8 @@ getDate = do
 getOrganizer :: String -> IO Organizer
 getOrganizer token = do
     json1 <- getJsonFromUsersList token
+    json2 <- getJsonFromGroupsList token
     return Organizer
       { usersList = parseUsersList json1
+      , groupsList = parseGroupsList json2
       }

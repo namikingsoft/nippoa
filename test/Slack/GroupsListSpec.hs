@@ -10,8 +10,8 @@ import Control.Exception (evaluate)
 import Data.ByteString.Lazy.Char8 (pack)
 import Slack.ChannelSpec
 
-groupsList :: GroupsList
-groupsList
+groupsList0 :: GroupsList
+groupsList0
   = GroupsList
   { groupsListOk = True
   , groupsListGroups = [channel0, channel1]
@@ -22,11 +22,11 @@ spec = do
 
   describe "groupsListOk" $ do
     it "should return initial value" $ do
-      groupsListOk groupsList `shouldBe` True
+      groupsListOk groupsList0 `shouldBe` True
 
   describe "groupsListGroups" $ do
     it "should return initial value" $ do
-      let list = groupsListGroups groupsList
+      let list = groupsListGroups groupsList0
       length list `shouldBe` 2
       list !! 0 `shouldBe` channel0
       list !! 1 `shouldBe` channel1
@@ -35,13 +35,13 @@ spec = do
     it "should return parsed from json" $ do
       let jsonPath = joinPath [takeDirectory __FILE__,"mock","GroupsList.json"]
       json <- readFile jsonPath
-      parseGroupsList (pack json) `shouldBe` groupsList
+      parseGroupsList (pack json) `shouldBe` groupsList0
     it "should call error when parse error" $ do
       let json = "{\"okk\": true}"
       evaluate (parseGroupsList $ pack json) `shouldThrow` anyErrorCall
 
   describe "fromGroupsName" $ do
     it "should return maybe channel" $ do
-      fromGroupsName "general" groupsList `shouldBe` Just channel0
-      fromGroupsName "random"  groupsList `shouldBe` Just channel1
-      fromGroupsName "nothing" groupsList `shouldBe` Nothing
+      fromGroupsName "general" groupsList0 `shouldBe` Just channel0
+      fromGroupsName "random"  groupsList0 `shouldBe` Just channel1
+      fromGroupsName "nothing" groupsList0 `shouldBe` Nothing

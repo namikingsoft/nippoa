@@ -8,12 +8,14 @@ import Nippoa.Record
 import Nippoa.Record.TimeStamp
 import Nippoa.Record.Author
 import Slack.UsersListSpec
+import Slack.GroupsListSpec
 import Slack.MessageSpec
 import Data.Maybe
 
 organizer0 :: Organizer
 organizer0 = Organizer
   { usersList = usersList0
+  , groupsList = groupsList0
   }
 
 spec :: Spec

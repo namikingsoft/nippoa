@@ -2,6 +2,7 @@
 module Slack.Organizer
   ( Organizer(..)
   , recordByMessage
+  , channelByName
   ) where
 
 import Text.Printf
@@ -24,9 +25,16 @@ import Nippoa.Record.Author
 import Slack.UsersList
   ( UsersList(..)
   )
+import Slack.GroupsList
+  ( GroupsList(..)
+  , fromGroupsName
+  )
 import Slack.Message
   ( Message(..)
   , toMarkdown
+  )
+import Slack.Channel
+  ( Channel(..)
   )
 import Slack.Attachment
   ( Attachment(..)
@@ -35,10 +43,11 @@ import Slack.Attachment
 data Organizer
   = Organizer
   { usersList :: UsersList
+  , groupsList :: GroupsList
   }
 
 recordByMessage :: Organizer -> Message -> Record
-recordByMessage factory x = case messageAttachments x of
+recordByMessage this x = case messageAttachments x of
   Just ys | attachesTitleLink ys /= "" ->
       Link
     { linkTimeStamp = timeStampFromTs . messageTs $ x
@@ -55,3 +64,6 @@ recordByMessage factory x = case messageAttachments x of
   where
     attachesTitle = fromMaybe "" . attachmentTitle . head
     attachesTitleLink =  fromMaybe "" . attachmentTitleLink . head
+
+channelByName :: Organizer -> String -> Maybe Channel
+channelByName this name = fromGroupsName name $ groupsList this
