@@ -18,6 +18,9 @@ import Data.Time.Format
 import Data.Time.Clock
   ( UTCTime
   )
+import Utility.Time
+  ( jst
+  )
 
 newtype TimeStamp
   = TimeStamp
@@ -33,4 +36,3 @@ timeStampToText :: TimeStamp -> String
 timeStampToText = format . utcToZonedTime jst . timeStampUTCTime
   where
     format = formatTime defaultTimeLocale "%F %T"
-    jst = hoursToTimeZone 9

@@ -19,6 +19,7 @@ import Slack.Channel
 import Slack.Message
 import Slack.Network
 import Slack.Organizer
+import Utility.Time
 
 execute :: IO ()
 execute = do
@@ -26,9 +27,9 @@ execute = do
     token <- getEnv "SLACK_API_TOKEN"
     channelName <- getEnv "SLACK_CHANNEL_NAME"
     organizer <- getOrganizer token
-    (date, isToday) <- getDate
+    (date1, date2) <- getDate
     let channel = returnChannel $ channelByName organizer channelName
-    json <- getJsonFromGroupsHistory token channel date isToday
+    json <- getJsonFromGroupsHistory token channel date1 date2
     putStrLn . messagesTextFrom organizer $ json
   where
     returnChannel = fromMaybe (error "Channel Not Found")
@@ -37,13 +38,27 @@ execute = do
     record organizer = newline . recordRender . recordByMessage organizer
     newline x = x ++ "\n"
 
-getDate :: IO (String, Bool)
+getDate :: IO (UTCTime, UTCTime)
 getDate = do
     args <- getArgs
-    currentTime <- getZonedTime
+    currentTime <- getCurrentTime
+    zonedTime <- getZonedTime
     return $ case length args of
-      1 -> (args !! 0, False)
-      otherwise -> (zonedToDate currentTime, True)
+      2 ->
+        ( dateToUtc $ args !! 0
+        , dateToUtc $ args !! 1
+        )
+      1 -> case dateToUtc $ args !! 0 of
+        n | addUTCTime oneDay n < currentTime ->
+          ( n, addUTCTime oneDay n)
+        n | otherwise ->
+          ( n, currentTime )
+      _ ->
+        ( dateToUtc . zonedToDate $ zonedTime
+        , currentTime
+        )
+  where
+    oneDay = diffSec 86400
 
 getOrganizer :: String -> IO Organizer
 getOrganizer token = do

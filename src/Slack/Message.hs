@@ -48,6 +48,9 @@ import Codec.Binary.UTF8.String
 import Slack.Attachment
   ( Attachment(..)
   )
+import Utility.Time
+  ( jst
+  )
 
 data Message
   = Message
@@ -83,7 +86,6 @@ messageDateTime = zonedTime . utcTime . messageTs
   where
     zonedTime x = utcToZonedTime jst x
     utcTime x = parseTimeOrError True defaultTimeLocale "%s%Q" x :: UTCTime
-    jst = hoursToTimeZone 9
 
 messageTemplate :: Message -> String
 messageTemplate x =

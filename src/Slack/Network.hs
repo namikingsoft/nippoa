@@ -4,8 +4,6 @@ module Slack.Network
   , getJsonFromGroupsList
   , getJsonFromChannelsList
   , getJsonFromGroupsHistory
-  , dateToEpoch
-  , zonedToDate
   ) where
 
 import Text.Printf
@@ -31,6 +29,9 @@ import Data.Time.Clock
 import Slack.Channel
   ( Channel(..)
   )
+import Utility.Time
+  ( utcToEpoch
+  )
 
 getJsonFromUsersList :: String -> IO ByteString
 getJsonFromUsersList = simpleHttp . printf url
@@ -47,8 +48,8 @@ getJsonFromChannelsList = simpleHttp . printf url
   where
     url = "https://slack.com/api/channels.list?token=%s"
 
-getJsonFromGroupsHistory :: String -> Channel -> String -> Bool -> IO ByteString
-getJsonFromGroupsHistory token channel date isToday =
+getJsonFromGroupsHistory :: String -> Channel -> UTCTime -> UTCTime -> IO ByteString
+getJsonFromGroupsHistory token channel date1 date2 =
   case channelIsGroup channel of
     Just isGroup | isGroup ->
       simpleHttp $ printf urlGroups token (channelId channel) oldest latest
@@ -61,18 +62,5 @@ getJsonFromGroupsHistory token channel date isToday =
       "https://slack.com/api/channels.history" ++ params
     params =
       "?token=%s&channel=%s&count=1000&oldest=%s&latest=%s"
-    oldest = dateToEpoch date
-    latest
-      | isToday = ""
-      | otherwise = dateToEpoch $ show $ (read date :: Int) + 1
-
-dateToEpoch :: String -> String
-dateToEpoch =
-    utcToEpoch . dateToUTCTime
-  where
-    dateToUTCTime x =
-      parseTimeOrError True defaultTimeLocale "%Y%m%d%z" (x++"+0900") :: UTCTime
-    utcToEpoch = formatTime defaultTimeLocale "%s.%q"
-
-zonedToDate :: ZonedTime -> String
-zonedToDate = formatTime defaultTimeLocale "%Y%m%d"
+    oldest = utcToEpoch date1
+    latest = utcToEpoch date2
