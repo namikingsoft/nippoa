@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-module Slack.Network
+module Slack.Agent
   ( getJsonFromUsersList
   , getJsonFromGroupsList
   , getJsonFromChannelsList

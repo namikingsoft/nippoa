@@ -17,7 +17,7 @@ import Slack.ChannelsList
 import Slack.History
 import Slack.Channel
 import Slack.Message
-import Slack.Network
+import Slack.Agent
 import Slack.Organizer
 import Utility.Time
 

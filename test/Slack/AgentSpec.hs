@@ -1,7 +1,7 @@
 {-# LANGUAGE CPP #-}
-module Slack.NetworkSpec where
+module Slack.AgentSpec where
 
-import Slack.Network
+import Slack.Agent()
 import Test.Hspec
 
 spec :: Spec

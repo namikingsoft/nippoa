@@ -28,7 +28,7 @@ library
                      , Slack.UsersList
                      , Slack.User
                      , Slack.Profile
-                     , Slack.Network
+                     , Slack.Agent
                      , Slack.Organizer
                      , Utility.Time
   build-depends:       base >= 4.7 && < 5
@@ -66,7 +66,7 @@ test-suite nippoa-test
                      , Slack.UsersListSpec
                      , Slack.UserSpec
                      , Slack.ProfileSpec
-                     , Slack.NetworkSpec
+                     , Slack.AgentSpec
                      , Slack.OrganizerSpec
                      , Utility.TimeSpec
   build-depends:       base
