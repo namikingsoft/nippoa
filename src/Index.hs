@@ -11,32 +11,32 @@ import Data.Time.Format
 import Data.Time.Clock
 
 import Nippoa.Record
-import Nippoa.RecordFactory
 import Slack.UsersList
 import Slack.GroupsList
 import Slack.History
 import Slack.Channel
 import Slack.Message
 import Slack.Network
+import Slack.Organizer
 
 execute :: IO ()
 execute = do
     hSetEncoding stdout utf8
     token <- getEnv "SLACK_API_TOKEN"
     channelName <- getEnv "SLACK_CHANNEL_NAME"
-    factory <- getFactory token
+    organizer <- getOrganizer token
     json <- getJsonFromGroupsList token
     let channel = channelByNameFromJson channelName json
     (date, isToday) <- getDate
     json <- getJsonFromGroupsHistory token channel date isToday
-    putStrLn . messagesTextFrom factory $ json
+    putStrLn . messagesTextFrom organizer $ json
   where
     channelByNameFromJson name =
       channelId . fromMaybe (error "Channel Not Found") .
       fromGroupsName name . parseGroupsList
-    messagesTextFrom factory =
-      concat . reverse . map (record factory) . historyMessages . parseHistory
-    record factory = newline . recordRender . recordByMessage factory
+    messagesTextFrom organizer =
+      concat . reverse . map (record organizer) . historyMessages . parseHistory
+    record organizer = newline . recordRender . recordByMessage organizer
     newline x = x ++ "\n"
 
 getDate :: IO (String, Bool)
@@ -47,9 +47,9 @@ getDate = do
       1 -> (args !! 0, False)
       otherwise -> (zonedToDate currentTime, True)
 
-getFactory :: String -> IO RecordFactory
-getFactory token = do
+getOrganizer :: String -> IO Organizer
+getOrganizer token = do
     json1 <- getJsonFromUsersList token
-    return RecordFactory
+    return Organizer
       { usersList = parseUsersList json1
       }

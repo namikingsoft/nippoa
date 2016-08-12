@@ -1,6 +1,6 @@
 {-# LANGUAGE CPP #-}
-module Nippoa.RecordFactory
-  ( RecordFactory(..)
+module Slack.Organizer
+  ( Organizer(..)
   , recordByMessage
   ) where
 
@@ -32,12 +32,12 @@ import Slack.Attachment
   ( Attachment(..)
   )
 
-data RecordFactory
-  = RecordFactory
+data Organizer
+  = Organizer
   { usersList :: UsersList
   }
 
-recordByMessage :: RecordFactory -> Message -> Record
+recordByMessage :: Organizer -> Message -> Record
 recordByMessage factory x = case messageAttachments x of
   Just ys | attachesTitleLink ys /= "" ->
       Link
