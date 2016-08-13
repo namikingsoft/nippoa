@@ -54,6 +54,7 @@ test-suite nippoa-test
   hs-source-dirs:      test
   ghc-options:         -Wall
   other-modules:       IndexSpec
+                     , SandboxSpec
                      , Nippoa.RecordSpec
                      , Nippoa.Record.AuthorSpec
                      , Nippoa.Record.TimeStampSpec
