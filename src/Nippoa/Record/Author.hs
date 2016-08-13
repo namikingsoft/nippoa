@@ -3,7 +3,11 @@ module Nippoa.Record.Author
   ( Author (..)
   ) where
 
-newtype Author
+data Author
   = Author
-  { authorId :: String
-  } deriving (Show, Eq)
+  { authorName :: String
+  , authorImage24 :: String
+  , authorImage48 :: String
+  }
+  | None
+  deriving (Show, Eq)

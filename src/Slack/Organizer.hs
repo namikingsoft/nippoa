@@ -24,6 +24,7 @@ import Nippoa.Record.Author
   )
 import Slack.UsersList
   ( UsersList(..)
+  , userById
   )
 import Slack.GroupsList
   ( GroupsList(..)
@@ -40,6 +41,12 @@ import Slack.Message
 import Slack.Channel
   ( Channel(..)
   )
+import Slack.User
+  ( User(..)
+  )
+import Slack.Profile
+  ( Profile(..)
+  )
 import Slack.Attachment
   ( Attachment(..)
   )
@@ -52,21 +59,39 @@ data Organizer
   }
 
 recordByMessage :: Organizer -> Message -> Record
-recordByMessage this x = case messageAttachments x of
-  Just ys | attachesTitleLink ys /= "" ->
-      Link
-    { linkTimeStamp = timeStampFromTs . messageTs $ x
-    , linkAuthor = Author . fromMaybe "" . messageUser $ x
-    , linkText = attachesTitle ys
-    , linkHref = attachesTitleLink ys
-    }
-  otherwise ->
-      Plain
-    { plainTimeStamp = timeStampFromTs . messageTs $ x
-    , plainAuthor = Author . fromMaybe "" . messageUser $ x
-    , plainText = toMarkdown . fromMaybe "" . messageText $ x
-    }
+recordByMessage this x =
+  case messageUser x of
+    Just id ->
+        Plain
+      { plainTimeStamp = timeStampFromTs . messageTs $ x
+      , plainAuthor
+          = Author
+          { authorName = userName user
+          , authorImage24 = profileImage24 . userProfile $ user
+          , authorImage48 = profileImage48 . userProfile $ user
+          }
+      , plainText = toMarkdown . fromMaybe "" . messageText $ x
+      }
+      where
+        user = returnUser . userById (usersList this) $ id
+    otherwise ->
+      case messageAttachments x of
+        Just ys | attachesTitleLink ys /= "" ->
+            Link
+          { linkTimeStamp = timeStampFromTs . messageTs $ x
+          , linkAuthor = None
+          , linkText = attachesTitle ys
+          , linkHref = attachesTitleLink ys
+          }
+        otherwise ->
+            Plain
+          { plainTimeStamp = timeStampFromTs . messageTs $ x
+          , plainAuthor = None
+          , plainText = toMarkdown . fromMaybe "" . messageText $ x
+          }
   where
+    returnUserById = returnUser . userById (usersList this)
+    returnUser = fromMaybe (error "User Not Found")
     attachesTitle = fromMaybe "" . attachmentTitle . head
     attachesTitleLink =  fromMaybe "" . attachmentTitleLink . head
 

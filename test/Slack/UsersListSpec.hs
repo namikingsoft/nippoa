@@ -41,6 +41,6 @@ spec = do
 
   describe "userById" $ do
     it "should return maybe user by id" $ do
-      userById "id0" usersList0 `shouldBe` Just user0
-      userById "id1" usersList0 `shouldBe` Just user1
-      userById "nothing" usersList0 `shouldBe` Nothing
+      userById usersList0 "id0" `shouldBe` Just user0
+      userById usersList0 "id1" `shouldBe` Just user1
+      userById usersList0 "nothing" `shouldBe` Nothing

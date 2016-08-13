@@ -52,9 +52,9 @@ parseUsersList json = usersList
     maybeUsersList = decode json :: Maybe UsersList
     usersList = fromMaybe (error "Parse Error") maybeUsersList
 
-userById :: String -> UsersList -> Maybe User
-userById id result
+userById :: UsersList -> String -> Maybe User
+userById this id
   | length hits > 0 = Just $ head hits
   | otherwise = Nothing
   where
-    hits = filter (\x -> id == userId x) $ usersListUsers result
+    hits = filter (\x -> id == userId x) $ usersListUsers this
