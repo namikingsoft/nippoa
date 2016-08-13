@@ -30,6 +30,7 @@ library
                      , Slack.Profile
                      , Slack.Agent
                      , Slack.Organizer
+                     , Utility.Base
                      , Utility.Time
   build-depends:       base >= 4.7 && < 5
                      , http-conduit ==2.1.11
@@ -69,6 +70,7 @@ test-suite nippoa-test
                      , Slack.ProfileSpec
                      , Slack.AgentSpec
                      , Slack.OrganizerSpec
+                     , Utility.BaseSpec
                      , Utility.TimeSpec
   build-depends:       base
                      , hspec ==2.2.3
