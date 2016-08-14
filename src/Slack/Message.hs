@@ -2,8 +2,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Slack.Message
   ( Message(..)
-  , messageDateTime
-  , messageTemplate
   , toMarkdown
   ) where
 
@@ -16,27 +14,8 @@ import Data.Aeson
   , (.:?)
   , (.=)
   )
-import Data.Maybe
-  ( fromMaybe
-  )
-import Data.Time.LocalTime
-  ( ZonedTime
-  , hoursToTimeZone
-  , utcToZonedTime
-  )
-import Data.Time.Format
-  ( formatTime
-  , parseTimeOrError
-  , defaultTimeLocale
-  )
-import Data.Time.Clock
-  ( UTCTime
-  )
 import Slack.Attachment
   ( Attachment(..)
-  )
-import Utility.Time
-  ( jst
   )
 import Utility.Regex
   ( split
@@ -71,37 +50,6 @@ instance ToJSON Message where
     , "bot_id" .= botId
     , "attachments" .= attachments
     ]
-
-messageDateTime :: Message -> ZonedTime
-messageDateTime = zonedTime . utcTime . messageTs
-  where
-    zonedTime x = utcToZonedTime jst x
-    utcTime x = parseTimeOrError True defaultTimeLocale "%s%Q" x :: UTCTime
-
-messageTemplate :: Message -> String
-messageTemplate x =
-    time x ++ text x ++ "\n" ++ attachments x
-  where
-    formatDate = formatTime defaultTimeLocale "[%F %T] "
-    time = formatDate . messageDateTime
-    text = toMarkdown . fromMaybe "" . messageText
-    justAttachmentText x
-      | normal x == attachmentFallback x = ""
-      | otherwise = normal x
-      where
-        normal = fromMaybe "" . attachmentText
-    justAttachments = fromMaybe [] . messageAttachments
-    attachments = concat . map attachment . justAttachments
-    attachment x =
-      "> " ++ (toMarkdown . attachmentFallback) x ++ "\n" ++
-      "\n" ++ (pre . toMarkdown . justAttachmentText) x ++ "\n"
-    pre :: String -> String
-    pre x
-      | x == "" = x
-      | otherwise = concat . map addSite . splitLine $ x
-      where
-        splitLine = split "\n"
-        addSite x = "> " ++ x ++ "\n" :: String
 
 toMarkdown :: String -> String
 toMarkdown =
