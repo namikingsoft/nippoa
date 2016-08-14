@@ -3,9 +3,6 @@ module SandboxSpec where
 
 import Test.Hspec
 
-import Text.Regex
-import Codec.Binary.UTF8.String
-
 example0 :: Maybe Bool
 example0 = Just True
 
@@ -20,11 +17,6 @@ example2 x = show <$> (+3) <$> (*3) <$> Just x
 
 example3 :: Maybe [Int]
 example3 = map (+3) <$> Just [1, 2]
-
-example4 :: Maybe [String]
-example4 = map decodeString <$> (matchRegex regex . encodeString) "<test>"
-  where
-    regex = mkRegex "<(.*)>"
 
 spec :: Spec
 spec = do
@@ -44,7 +36,3 @@ spec = do
   describe "example3" $ do
     it "should return maybe true" $ do
       example3 `shouldBe` Just [4, 5]
-
-  describe "example4" $ do
-    it "should return maybe true" $ do
-      example4 `shouldBe` Just ["test"]
