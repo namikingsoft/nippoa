@@ -32,20 +32,15 @@ import Data.Time.Format
 import Data.Time.Clock
   ( UTCTime
   )
-import Text.Regex
-  ( mkRegex
-  , subRegex
-  , splitRegex
-  )
-import Codec.Binary.UTF8.String
-  ( encodeString
-  , decodeString
-  )
 import Slack.Attachment
   ( Attachment(..)
   )
 import Utility.Time
   ( jst
+  )
+import Utility.Regex
+  ( split
+  , replace
   )
 
 data Message
@@ -105,16 +100,16 @@ messageTemplate x =
       | x == "" = x
       | otherwise = concat . map addSite . splitLine $ x
       where
-        splitLine = splitRegex (mkRegex "\n")
+        splitLine = split "\n"
         addSite x = "> " ++ x ++ "\n" :: String
 
 toMarkdown :: String -> String
 toMarkdown =
-    decodeString . toImageIfExists . toMarkdownOnlyLink . toMarkdownWithLabel . encodeString
+    toImageIfExists . toMarkdownOnlyLink . toMarkdownWithLabel
   where
-    toMarkdownWithLabel x = subRegex regexWithLabel x "[\\2](\\1)"
-    toMarkdownOnlyLink x = subRegex regexOnlyLink x "[\\1](\\1)"
-    toImageIfExists x = subRegex regexWithImage x "!\\1"
-    regexWithLabel = mkRegex "<([^<>\\|]+)\\|([^<>]+)>"
-    regexOnlyLink = mkRegex "<([^<>\\|]+)>"
-    regexWithImage = mkRegex "(\\[[^\\]*\\]\\([^\\)]+\\.(gif|png|jpe?g)\\))"
+    toMarkdownWithLabel = replaceWithLabel "[\\2](\\1)"
+    toMarkdownOnlyLink = replaceOnlyLink "[\\1](\\1)"
+    toImageIfExists = replaceWithImage "!\\1"
+    replaceWithLabel = replace "<([^<>\\|]+)\\|([^<>]+)>"
+    replaceOnlyLink = replace "<([^<>\\|]+)>"
+    replaceWithImage = replace "(\\[[^\\]*\\]\\([^\\)]+\\.(gif|png|jpe?g)\\))"
