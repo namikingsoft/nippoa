@@ -26,10 +26,20 @@ data Record
   , linkAuthor :: Author
   , linkText :: String
   , linkHref :: String
-  } deriving (Show, Eq)
+  }
+  | GitHubComment
+  { githubCommentTimeStamp :: TimeStamp
+  , githubCommentAuthor :: Author
+  , githubCommentLink :: String
+  , githubCommentTitle :: String
+  , githubCommentText :: String
+  }
+  deriving (Show, Eq)
 
 recordRender :: Record -> String
 recordRender (Plain time author text) =
     printf "[%s] %s" (timeStampToText time) text
 recordRender (Link time author text link) =
     printf "[%s] [%s](%s)" (timeStampToText time) text link
+recordRender (GitHubComment time author link title text) =
+    printf "[%s] %s" (timeStampToText time) title

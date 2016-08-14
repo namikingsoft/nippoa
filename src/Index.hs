@@ -34,8 +34,8 @@ execute = do
   where
     returnChannel = fromMaybe (error "Channel Not Found")
     messagesTextFrom organizer =
-      concat . reverse . map (record organizer) . historyMessages . parseHistory
-    record organizer = newline . recordRender . recordByMessage organizer
+      concat . reverse . map (newline . recordRender) .
+      concatMap (recordsByMessage organizer) . historyMessages . parseHistory
     newline x = x ++ "\n"
 
 getDate :: IO (UTCTime, UTCTime)

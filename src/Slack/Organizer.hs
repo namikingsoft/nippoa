@@ -1,15 +1,23 @@
 {-# LANGUAGE CPP #-}
 module Slack.Organizer
   ( Organizer(..)
-  , recordByMessage
+  , recordsByMessage
   , channelByName
   ) where
 
 import Text.Printf
   ( printf
   )
+import Text.Regex
+  ( mkRegex
+  , matchRegex
+  )
 import Data.Maybe
   ( fromMaybe
+  )
+import Codec.Binary.UTF8.String
+  ( encodeString
+  , decodeString
   )
 import Nippoa.Record
   ( Record(..)
@@ -50,6 +58,11 @@ import Slack.Profile
 import Slack.Attachment
   ( Attachment(..)
   )
+import Utility.Base
+  ( liftJustList
+  , filterJust
+  , isMaybe
+  )
 
 data Organizer
   = Organizer
@@ -58,42 +71,56 @@ data Organizer
   , channelsList :: ChannelsList
   }
 
-recordByMessage :: Organizer -> Message -> Record
-recordByMessage this x =
-  case messageUser x of
-    Just id ->
-        Plain
-      { plainTimeStamp = timeStampFromTs . messageTs $ x
-      , plainAuthor
-          = Author
-          { authorName = userName user
-          , authorImage24 = profileImage24 . userProfile $ user
-          , authorImage48 = profileImage48 . userProfile $ user
+recordsByMessage :: Organizer -> Message -> [Record]
+recordsByMessage this x =
+    recordsMain x ++ recordsAttaches x
+  where
+    recordsMain =
+      liftJustList . recordByMessage
+    recordsAttaches =
+      filterJust . map recordByAttachment . fromMaybe [] . messageAttachments
+    recordByMessage x =
+      case messageUser x of
+        Just id -> Just
+            Plain
+          { plainTimeStamp = timeStampFromTs . messageTs $ x
+          , plainAuthor
+              = Author
+              { authorName = userName user
+              , authorImage24 = profileImage24 . userProfile $ user
+              , authorImage48 = profileImage48 . userProfile $ user
+              }
+          , plainText = toMarkdown . fromMaybe "" . messageText $ x
           }
-      , plainText = toMarkdown . fromMaybe "" . messageText $ x
-      }
-      where
-        user = returnUser . userById (usersList this) $ id
-    otherwise ->
-      case messageAttachments x of
-        Just ys | attachesTitleLink ys /= "" ->
+          where
+            user = returnUser . userById (usersList this) $ id
+        otherwise -> Nothing
+    recordByAttachment y =
+      case attachmentTitleLink y of
+        Just n -> Just
             Link
           { linkTimeStamp = timeStampFromTs . messageTs $ x
           , linkAuthor = None
-          , linkText = attachesTitle ys
-          , linkHref = attachesTitleLink ys
+          , linkText = fromMaybe "" . attachmentTitle $ y
+          , linkHref = n
           }
         otherwise ->
-            Plain
-          { plainTimeStamp = timeStampFromTs . messageTs $ x
-          , plainAuthor = None
-          , plainText = toMarkdown . fromMaybe "" . messageText $ x
-          }
-  where
+          case attachmentFallback y of
+            n | isMaybe . matchGitHubComment $ n -> Just
+                GitHubComment
+              { githubCommentTimeStamp = timeStampFromTs . messageTs $ x
+              , githubCommentAuthor = None
+              , githubCommentLink = (!!0) . fromMaybe [] . matchGitHubComment $ n
+              , githubCommentTitle = (!!1) . fromMaybe [] . matchGitHubComment $ n
+              , githubCommentText = fromMaybe "" . attachmentText $ y
+              }
+            otherwise -> Nothing
+      where
+        matchGitHubComment :: String -> Maybe [String]
+        matchGitHubComment x = map decodeString <$> (matchRegex regexGitHubComment . encodeString $ x)
+        regexGitHubComment = mkRegex "New comment by .* <(.*)\\|(.*)>"
     returnUserById = returnUser . userById (usersList this)
     returnUser = fromMaybe (error "User Not Found")
-    attachesTitle = fromMaybe "" . attachmentTitle . head
-    attachesTitleLink =  fromMaybe "" . attachmentTitleLink . head
 
 channelByName :: Organizer -> String -> Maybe Channel
 channelByName this name = case maybeChannel1 of
