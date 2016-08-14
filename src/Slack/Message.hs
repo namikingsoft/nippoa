@@ -18,8 +18,7 @@ import Slack.Attachment
   ( Attachment(..)
   )
 import Utility.Regex
-  ( split
-  , replace
+  ( replace
   )
 
 data Message
