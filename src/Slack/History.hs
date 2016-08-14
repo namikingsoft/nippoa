@@ -5,10 +5,6 @@ module Slack.History
   , parseHistory
   ) where
 
-import Control.Applicative
-  ( (<$>)
-  , (<*>)
-  )
 import Data.Aeson
   ( Value(..)
   , FromJSON(..)

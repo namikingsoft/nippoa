@@ -4,10 +4,6 @@ module Slack.Channel
   ( Channel(..)
   ) where
 
-import Control.Applicative
-  ( (<$>)
-  , (<*>)
-  )
 import Data.Aeson
   ( Value(..)
   , FromJSON(..)

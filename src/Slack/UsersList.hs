@@ -6,10 +6,6 @@ module Slack.UsersList
   , userById
   ) where
 
-import Control.Applicative
-  ( (<$>)
-  , (<*>)
-  )
 import Data.Aeson
   ( Value(..)
   , FromJSON(..)

@@ -4,10 +4,6 @@ module Slack.Attachment
   ( Attachment(..)
   ) where
 
-import Control.Applicative
-  ( (<$>)
-  , (<*>)
-  )
 import Data.Aeson
   ( Value(..)
   , FromJSON(..)

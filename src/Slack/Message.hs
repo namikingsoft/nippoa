@@ -7,10 +7,6 @@ module Slack.Message
   , toMarkdown
   ) where
 
-import Control.Applicative
-  ( (<$>)
-  , (<*>)
-  )
 import Data.Aeson
   ( Value(..)
   , FromJSON(..)

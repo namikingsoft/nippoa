@@ -4,10 +4,6 @@ module Slack.Profile
   ( Profile(..)
   ) where
 
-import Control.Applicative
-  ( (<$>)
-  , (<*>)
-  )
 import Data.Aeson
   ( Value(..)
   , FromJSON(..)

@@ -6,10 +6,6 @@ module Slack.ChannelsList
   , channelByChannelsName
   ) where
 
-import Control.Applicative
-  ( (<$>)
-  , (<*>)
-  )
 import Data.Aeson
   ( Value(..)
   , FromJSON(..)
