@@ -8,16 +8,8 @@ module Slack.Organizer
 import Text.Printf
   ( printf
   )
-import Text.Regex
-  ( mkRegex
-  , matchRegex
-  )
 import Data.Maybe
   ( fromMaybe
-  )
-import Codec.Binary.UTF8.String
-  ( encodeString
-  , decodeString
   )
 import Nippoa.Record
   ( Record(..)
@@ -62,6 +54,9 @@ import Utility.Base
   ( liftJustList
   , filterJust
   , isMaybe
+  )
+import Utility.Regex
+  ( match
   )
 
 data Organizer
@@ -116,9 +111,7 @@ recordsByMessage this x =
               }
             otherwise -> Nothing
       where
-        matchGitHubComment :: String -> Maybe [String]
-        matchGitHubComment x = map decodeString <$> (matchRegex regexGitHubComment . encodeString $ x)
-        regexGitHubComment = mkRegex "New comment by .* <(.*)\\|(.*)>"
+        matchGitHubComment = match "New comment by .* <(.*)\\|(.*)>"
     returnUserById = returnUser . userById (usersList this)
     returnUser = fromMaybe (error "User Not Found")
 
