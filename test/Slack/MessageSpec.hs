@@ -5,8 +5,6 @@ import Slack.Message
 import Test.Hspec
 import Slack.AttachmentSpec
 
-import Data.Time.Format
-
 message0 :: Message
 message0
   = Message
@@ -56,16 +54,6 @@ spec = do
     it "should return initial value" $ do
       messageBotId message0 `shouldBe` Just "botid0"
       messageBotId message1 `shouldBe` Just "botid1"
-
-  describe "messageDateTime" $ do
-    it "should return initial value" $ do
-      let format = formatTime defaultTimeLocale "%F %T"
-      format (messageDateTime message0) `shouldBe` "2016-07-29 14:01:18"
-      format (messageDateTime message1) `shouldBe` "2016-07-29 14:01:18"
-
-  describe "messageTemplate" $ do
-    it "should return template text of message" $ do
-      pending
 
   describe "toMarkdown" $ do
     it "should return text to markdown" $ do
