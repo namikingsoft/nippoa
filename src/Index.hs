@@ -5,17 +5,11 @@ module Index
 
 import System.IO (hSetEncoding, stdout, utf8)
 import System.Environment (getEnv, getArgs)
-import Control.Concurrent
 import Data.Maybe
 import Data.Time.LocalTime
 import Data.Time.Format
 import Data.Time.Clock
-import qualified Data.ByteString.Lazy as B
-import Data.ByteString.Lazy.Internal
 import Nippoa.Record
-import Slack.UsersList
-import Slack.GroupsList
-import Slack.ChannelsList
 import Slack.History
 import Slack.Channel
 import Slack.Message
@@ -61,32 +55,3 @@ getDate = do
         )
   where
     oneDay = diffSec 86400
-
-getOrganizer :: String -> IO Organizer
-getOrganizer token = do
-    mjson1 <- newMVar B.empty
-    mjson2 <- newMVar B.empty
-    mjson3 <- newMVar B.empty
-    forkIO $ forkJson getJsonFromUsersList mjson1
-    forkIO $ forkJson getJsonFromGroupsList mjson2
-    forkIO $ forkJson getJsonFromChannelsList mjson3
-    waitForOrganizer mjson1 mjson2 mjson3
-  where
-    forkJson getJson mjson = do
-        json <- getJson token
-        putMVar mjson json
-    waitForOrganizer mjson1 mjson2 mjson3 = do
-        json1 <- takeMVar mjson1
-        json2 <- takeMVar mjson2
-        json3 <- takeMVar mjson3
-        case isDone json1 && isDone json2 && isDone json3 of
-            True ->
-                return Organizer
-                  { usersList = parseUsersList json1
-                  , groupsList = parseGroupsList json2
-                  , channelsList = parseChannelsList json3
-                  }
-            False -> waitForOrganizer mjson1 mjson2 mjson3
-      where
-        isDone json = B.length json > 0
-

@@ -24,6 +24,10 @@ organizer0 = Organizer
 spec :: Spec
 spec = do
 
+  describe "getOrganizer" $ do
+    it "should create organizer" $ do
+      pending
+
   describe "recordsByMessage" $ do
     it "should create record by slack message" $ do
       pending
