@@ -81,9 +81,9 @@ import Utility.Regex
 
 data Organizer
   = Organizer
-  { usersList :: UsersList
-  , groupsList :: GroupsList
-  , channelsList :: ChannelsList
+  { organizerUsersList :: UsersList
+  , organizerGroupsList :: GroupsList
+  , organizerChannelsList :: ChannelsList
   }
 
 getOrganizer :: String -> IO Organizer
@@ -104,12 +104,12 @@ getOrganizer token = do
         json2 <- takeMVar mjson2
         json3 <- takeMVar mjson3
         case isDone json1 && isDone json2 && isDone json3 of
-            True ->
-                return Organizer
-                  { usersList = parseUsersList json1
-                  , groupsList = parseGroupsList json2
-                  , channelsList = parseChannelsList json3
-                  }
+            True -> return
+                Organizer
+              { organizerUsersList = parseUsersList json1
+              , organizerGroupsList = parseGroupsList json2
+              , organizerChannelsList = parseChannelsList json3
+              }
             False -> waitForOrganizer mjson1 mjson2 mjson3
       where
         isDone json = B.length json > 0
@@ -137,7 +137,7 @@ recordsByMessage this x =
           , plainText = toMarkdown . fromMaybe "" . messageText $ x
           }
           where
-            user = returnUser . userById (usersList this) $ id
+            user = returnUser . userById (organizerUsersList this) $ id
         otherwise -> Nothing
     recordByAttachment y =
       case attachmentTitleLink y of
@@ -161,7 +161,7 @@ recordsByMessage this x =
             otherwise -> Nothing
       where
         matchGitHubComment = match "New comment by .* <(.*)\\|(.*)>"
-    returnUserById = returnUser . userById (usersList this)
+    returnUserById = returnUser . userById (organizerUsersList this)
     returnUser = fromMaybe (error "User Not Found")
 
 channelByName :: Organizer -> String -> Maybe Channel
@@ -171,5 +171,5 @@ channelByName this name = case maybeChannel1 of
       Just channel2 -> maybeChannel2
       othersize -> Nothing
   where
-    maybeChannel1 = channelByGroupsName (groupsList this) name
-    maybeChannel2 = channelByChannelsName (channelsList this) name
+    maybeChannel1 = channelByGroupsName (organizerGroupsList this) name
+    maybeChannel2 = channelByChannelsName (organizerChannelsList this) name
