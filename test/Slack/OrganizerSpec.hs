@@ -15,14 +15,31 @@ import Slack.ChannelSpec
 --import Data.Maybe
 
 organizer0 :: Organizer
-organizer0 = Organizer
-  { usersList = usersList0
-  , groupsList = groupsList0
-  , channelsList = channelsList0
+organizer0
+  = Organizer
+  { organizerUsersList = usersList0
+  , organizerGroupsList = groupsList0
+  , organizerChannelsList = channelsList0
   }
 
 spec :: Spec
 spec = do
+
+  describe "organizerUsersList" $ do
+    it "should create organizer" $ do
+      organizerUsersList organizer0 `shouldBe` usersList0
+
+  describe "organizerGroupsList" $ do
+    it "should create organizer" $ do
+      organizerGroupsList organizer0 `shouldBe` groupsList0
+
+  describe "organizerChannelsList" $ do
+    it "should create organizer" $ do
+      organizerChannelsList organizer0 `shouldBe` channelsList0
+
+  describe "getOrganizer" $ do
+    it "should create organizer" $ do
+      pending
 
   describe "recordsByMessage" $ do
     it "should create record by slack message" $ do
