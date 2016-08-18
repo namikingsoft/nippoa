@@ -24,11 +24,11 @@ execute = do
     channelName <- getEnv "SLACK_CHANNEL_NAME"
     organizer <- getOrganizer token
     (date1, date2) <- getDate
-    let channel = returnChannel $ channelByName organizer channelName
+    let channel = fromMaybeChannel $ channelByName organizer channelName
     json <- getJsonFromGroupsHistory token channel date1 date2
     putStrLn . messagesTextFrom organizer $ json
   where
-    returnChannel = fromMaybe (error "Channel Not Found")
+    fromMaybeChannel = fromMaybe (error "Channel Not Found")
     messagesTextFrom organizer =
       concat . reverse . map (newline . recordRender) .
       concatMap (recordsByMessage organizer) . historyMessages . parseHistory

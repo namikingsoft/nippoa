@@ -137,7 +137,7 @@ recordsByMessage this x =
           , plainText = toMarkdown . fromMaybe "" . messageText $ x
           }
           where
-            user = returnUser . userById (organizerUsersList this) $ id
+            user = fromMaybeUser . userById (organizerUsersList this) $ id
         otherwise -> Nothing
     recordByAttachment y =
       case attachmentTitleLink y of
@@ -161,8 +161,7 @@ recordsByMessage this x =
             otherwise -> Nothing
       where
         matchGitHubComment = match "New comment by .* <(.*)\\|(.*)>"
-    returnUserById = returnUser . userById (organizerUsersList this)
-    returnUser = fromMaybe (error "User Not Found")
+    fromMaybeUser = fromMaybe (error "User Not Found")
 
 channelByName :: Organizer -> String -> Maybe Channel
 channelByName this name = case maybeChannel1 of
